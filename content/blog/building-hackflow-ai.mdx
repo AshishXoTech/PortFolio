@@ -1,0 +1,34 @@
+---
+title: "Building HackFlow AI — A Hackathon Management Platform"
+description: "How we built an AI-powered hackathon platform with Next.js, FastAPI, and PostgreSQL for university events."
+date: 2025-03-15
+tags: ["Next.js", "FastAPI", "PostgreSQL", "Hackathons"]
+---
+
+Building HackFlow AI started with a simple observation: university hackathons are chaotic. Registration spreadsheets, manual judging, and scattered communication channels make organizing events painful for everyone involved.
+
+## The Problem
+
+Organizers juggle Google Forms, WhatsApp groups, and Excel sheets. Participants lose track of submission deadlines. Judges have no standardized rubric system. We needed a unified platform.
+
+## Architecture
+
+We chose a hybrid stack:
+
+- **Next.js 14** for the frontend with App Router and server components
+- **Node.js + Prisma** for the main API layer with PostgreSQL
+- **FastAPI** microservice for AI-powered judging assistance
+- **JWT authentication** with role-based access for organizers, mentors, and participants
+
+## Key Features
+
+1. Real-time team formation and project submission
+2. AI-assisted code review and project scoring
+3. Live leaderboard during hackathon events
+4. Automated email notifications via Resend
+
+## Lessons Learned
+
+Building for hackathon organizers taught us that UX simplicity beats feature richness. The most-used feature was the submission countdown timer — sometimes the simplest things matter most.
+
+HackFlow AI won our university internal hackathon and is now being adopted by multiple departments at UEM Jaipur.

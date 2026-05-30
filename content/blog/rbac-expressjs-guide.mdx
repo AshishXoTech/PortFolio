@@ -1,0 +1,68 @@
+---
+title: "RBAC in Express.js — A Complete Guide"
+description: "Implementing role-based access control in Express.js with JWT, middleware patterns, and MongoDB for the Rakshak Fraud Platform."
+date: 2025-01-20
+tags: ["Express.js", "RBAC", "JWT", "Security"]
+---
+
+Role-Based Access Control (RBAC) is essential for any multi-user application. When building Rakshak Fraud Platform, we needed granular permissions for admins, analysts, and auditors.
+
+## RBAC Fundamentals
+
+RBAC assigns permissions to roles, and roles to users. Instead of checking individual permissions per user, you check the user's role:
+
+- **Admin** — Full system access, user management
+- **Analyst** — View and flag transactions, run reports
+- **Auditor** — Read-only access to audit logs and reports
+
+## Implementation with Express.js
+
+### 1. JWT Payload Design
+
+Embed the user's role in the JWT payload:
+
+```javascript
+const token = jwt.sign(
+  { userId: user._id, role: user.role },
+  process.env.JWT_SECRET,
+  { expiresIn: "24h" }
+);
+```
+
+### 2. Authorization Middleware
+
+Create reusable middleware that checks roles:
+
+```javascript
+const authorize = (...roles) => (req, res, next) => {
+  if (!roles.includes(req.user.role)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+  next();
+};
+```
+
+### 3. Route Protection
+
+Apply middleware to protected routes:
+
+```javascript
+router.get("/transactions", authenticate, authorize("admin", "analyst"), getTransactions);
+router.delete("/users/:id", authenticate, authorize("admin"), deleteUser);
+```
+
+## MongoDB Schema Design
+
+Store roles as an enum on the User model with a separate Permissions collection for fine-grained control when needed.
+
+## Security Best Practices
+
+- Always validate JWT on every protected route
+- Use short token expiry with refresh tokens
+- Log all authorization failures for audit trails
+- Never expose role information in public API responses
+- Implement rate limiting on authentication endpoints
+
+## Outcome
+
+This RBAC implementation secured Rakshak's fraud detection pipeline, ensuring analysts could flag suspicious transactions without accessing admin-level system configuration. The pattern is now reusable across all our Node.js projects.

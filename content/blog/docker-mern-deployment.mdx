@@ -1,0 +1,44 @@
+---
+title: "Docker MERN Deployment — From Dev to Production"
+description: "A practical guide to containerizing and deploying a MERN stack application with Docker Compose and Nginx."
+date: 2025-02-10
+tags: ["Docker", "MERN", "DevOps", "Deployment"]
+---
+
+Deploying a MERN application to production doesn't have to be complicated. With Docker, you can achieve consistent environments from development to production.
+
+## Why Docker for MERN?
+
+Node.js version mismatches, missing environment variables, and "works on my machine" syndrome are common deployment blockers. Docker solves all three by packaging your entire stack into reproducible containers.
+
+## Project Structure
+
+Our Docker setup includes four services:
+
+- **client** — React frontend served by Nginx
+- **server** — Express.js API
+- **mongo** — MongoDB database with persistent volume
+- **redis** — Redis cache for session management
+
+## Docker Compose Configuration
+
+Each service gets its own Dockerfile optimized for production:
+
+- Multi-stage builds for the React client (build stage + Nginx serve stage)
+- Non-root user in the Node.js container for security
+- Health checks on all services
+- Named volumes for database persistence
+
+## Production Tips
+
+1. Use `.env` files for secrets — never commit them
+2. Set memory limits on containers to prevent OOM kills
+3. Use Docker networks to isolate services
+4. Enable MongoDB authentication in production
+5. Configure Nginx reverse proxy with SSL via Let's Encrypt
+
+## Results
+
+After containerizing Rakshak Fraud Platform, our deployment time dropped from 45 minutes of manual setup to a single `docker compose up -d` command. Zero-downtime updates became possible with rolling container restarts.
+
+This approach earned us recognition at a national hackathon where deployment reliability was a judging criterion.

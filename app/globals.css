@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --green: #00ff41;
+  --purple: #7c3aed;
+  --red: #ff003c;
+  --text: #e0e0e0;
+  --muted: #888888;
+  --glass-bg: rgba(12, 12, 12, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--text);
+  min-height: 100%;
+}
+
+@keyframes scan {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+@keyframes login-dot-grid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 24px 24px;
+  }
+}
+
+@keyframes login-ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-dot-grid {
+  background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+  background-size: 24px 24px;
+  animation: login-dot-grid 24s linear infinite;
+}
+
+.login-avatar-ring {
+  background: linear-gradient(135deg, #00ff41, #7c3aed);
+  animation: login-ring-spin 8s linear infinite;
+}
+
+.window-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #333333 transparent;
+}
+
+.window-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.window-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.window-scrollbar::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+@keyframes about-ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes about-ring-spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.about-photo-ring-1 {
+  animation: about-ring-spin 10s linear infinite;
+}
+
+.about-photo-ring-2 {
+  animation: about-ring-spin-reverse 15s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+::selection {
+  background-color: rgba(0, 255, 65, 0.3);
+  color: var(--text);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
