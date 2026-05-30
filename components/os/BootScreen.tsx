@@ -9,18 +9,13 @@ interface BootScreenProps {
 }
 
 const BOOT_LOG_LINES = [
-  "AshishOS v1.0.0 — initializing kernel...",
-  "Loading core modules.............. [ OK ]",
-  "Mounting /dev/portfolio........... [ OK ]",
-  "Starting MERN daemon v18.2........ [ OK ]",
-  "Loading React runtime............. [ OK ]",
-  "Connecting GitHub API............ [ OK ]",
-  "Initializing Three.js renderer.... [ OK ]",
-  "Loading portfolio data........... [ OK ]",
-  "Warming up OpenAI integration..... [ OK ]",
-  "All systems operational.",
+  "Booting AshishOS...",
   "",
-  "Welcome, recruiter.",
+  "Full Stack Engineer building systems, products, and developer-first experiences.",
+  "",
+  "Currently compiling: Java + DSA + System Design",
+  "",
+  "Target output: Software Engineer",
 ] as const;
 
 const MATRIX_CHARS = "アイウエオカキクケ0123456789<>{}[]";

@@ -93,37 +93,42 @@ export function getHelpLines(): TerminalLine[] {
 
 export function getWhoamiLines(): TerminalLine[] {
   return [
-    line(ASHISH_ASCII, "green", true),
+    line("Ashish Kumar Jha", "green", true),
     line("", "default"),
-    line("Role:", "muted"),
     line("Full Stack Developer", "default"),
+    line("B.Tech CSE @ UEM Jaipur", "muted"),
     line("", "default"),
-    line("Stack:", "muted"),
-    line("MERN | Next.js | TypeScript | Docker | FastAPI", "purple"),
+    line("Building:", "muted"),
+    line("  Web platforms", "default"),
+    line("  AI-powered tools", "default"),
+    line("  Backend systems", "default"),
     line("", "default"),
-    line("Status:", "muted"),
-    line("Available for opportunities", "green"),
-    line("", "default"),
-    line("Location:", "muted"),
-    line("Jaipur, Rajasthan, India", "default"),
+    line("Current objective:", "muted"),
+    line("Software Engineer", "green"),
   ];
 }
 
 export function getNeofetchLines(): TerminalLine[] {
   const logoLines = NEOFETCH_LOGO.split("\n");
   const infoLines = [
-    "ashish@portfolio",
+    "AshishOS 1.0",
     "----------------------------",
-    "OS: AshishOS 1.0.0",
-    "Host: University of Engineering & Management",
-    "Kernel: Next.js 14.0 LTS",
-    "Uptime: Since August 2024",
-    "Packages: 47 npm packages",
-    "Shell: bash 5.2 (portfolio edition)",
-    "Terminal: AshishOS Terminal",
-    "CPU: Brain @ 3.6GHz (coffee-cooled)",
-    "Memory: 8.0 GPA / 10.0 Total",
-    "Hacks: 3x Winner / 2x National / 1x International",
+    "User: ashish",
+    "Role: Full Stack Developer",
+    "University: UEM Jaipur",
+    "CGPA: 8.0/10",
+    "",
+    "Stack:",
+    "Next.js, TypeScript, Node.js",
+    "FastAPI, PostgreSQL, MongoDB",
+    "Docker, Redis",
+    "",
+    "Achievements:",
+    "3x Internal Hackathon Winner",
+    "2x National Finalist",
+    "1x International Finalist",
+    "",
+    "Status: Learning Java + DSA",
   ];
 
   const maxRows = Math.max(logoLines.length, infoLines.length);
@@ -199,17 +204,9 @@ export function getEducationLines(): TerminalLine[] {
 
 export function getAchievementsLines(): TerminalLine[] {
   return [
-    line("🏆 [GOLD] 3x Internal Hackathon Winner — 100+ teams", "gold", true),
-    line(
-      "🥈 [SILVER] 2x National Hackathon Finalist",
-      "silver",
-      true
-    ),
-    line(
-      "🥉 [BRONZE] 1x International Hackathon Finalist",
-      "bronze",
-      true
-    ),
+    line("[✓] 3x Internal Hackathon Winner", "gold", true),
+    line("[✓] 2x National Hackathon Finalist", "silver", true),
+    line("[✓] 1x International Hackathon Finalist", "bronze", true),
   ];
 }
 
@@ -261,34 +258,42 @@ export function getCatResumeLines(): TerminalLine[] {
   ];
 }
 
+export function getCatSecretLines(): TerminalLine[] {
+  return [
+    line("There is no shortcut.", "green", true),
+    line("", "default"),
+    line("Every project here exists because of repeated failure,", "default"),
+    line("debugging at 2 AM,", "default"),
+    line("and rebuilding things that did not work the first time.", "default"),
+  ];
+}
+
 export function getSudoHireLines(): TerminalLine[] {
   return [
-    line("███████████████████████ 80%...100%", "green", true),
+    line("Access granted.", "success", true),
     line("", "default"),
-    line("ACCESS GRANTED", "success"),
+    line("Candidate Summary:", "muted"),
+    line("  - Ships projects", "default"),
+    line("  - Understands full-stack architecture", "default"),
+    line("  - Comfortable with modern web technologies", "default"),
+    line("  - Actively improving DSA and system design", "default"),
     line("", "default"),
-    line("Authorization:", "muted"),
-    line("SENIOR_ENGINEER_LEVEL", "green"),
-    line("", "default"),
-    line("Welcome to the team.", "default"),
-    line("You made a great decision.", "default"),
-    line("", "default"),
-    line("(Contact: ashish863863@gmail.com)", "muted"),
+    line("Recommendation:", "muted"),
+    line("Proceed to technical interview.", "green"),
   ];
 }
 
 export function getRmRfLines(): TerminalLine[] {
-  return lines(
-    [
-      "Removing files... src/... components/... app/...",
-      "Removing node_modules (this may take a while)...",
-      "...",
-      "Just kidding.",
-      "You cannot delete greatness.",
-      "AshishOS remains fully operational.",
-    ],
-    "default"
-  );
+  return [
+    line("Error:", "error"),
+    line("Permission denied.", "error"),
+    line("", "default"),
+    line("Reason:", "muted"),
+    line("Portfolio is currently mounted to production.", "default"),
+    line("", "default"),
+    line("Suggested action:", "muted"),
+    line("Explore projects instead.", "green"),
+  ];
 }
 
 export function getUnknownCommandLines(command: string): TerminalLine[] {
@@ -332,6 +337,7 @@ export function autocompleteCommand(input: string): string | null {
   }
 
   if (base === "cat" && trimmed === "cat r") return "cat resume.pdf";
+  if (base === "cat" && trimmed === "cat s") return "cat secret.txt";
   if (base === "sudo" && trimmed === "sudo h") return "sudo hire ashish";
   if (base === "rm" && trimmed.startsWith("rm -")) return "rm -rf portfolio";
 

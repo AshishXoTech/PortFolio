@@ -1,12 +1,12 @@
 import { Resend } from "resend";
 import type { ContactFormData } from "@/types";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function sendContactEmail(
   data: ContactFormData
 ): Promise<{ success: boolean; error?: string }> {
-  if (!process.env.RESEND_API_KEY) {
+  if (!resend) {
     return { success: false, error: "Email service not configured" };
   }
 

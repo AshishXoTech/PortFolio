@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Technical articles by Ashish Kumar Jha on full-stack development.",
+  description:
+    "Technical articles on full-stack development, system design, Docker, AI integrations, backend architecture, and engineering lessons.",
 };
 
 export default function BlogPage(): JSX.Element {

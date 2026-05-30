@@ -1,18 +1,22 @@
 ---
-title: "RBAC in Express.js — A Complete Guide"
-description: "Implementing role-based access control in Express.js with JWT, middleware patterns, and MongoDB for the Rakshak Fraud Platform."
+title: "How I Implemented RBAC in Express.js from Scratch"
+description: "A practical walkthrough of building role-based access control in Express.js with JWT authentication, middleware patterns, and MongoDB for the Rakshak Fraud Platform."
 date: 2025-01-20
-tags: ["Express.js", "RBAC", "JWT", "Security"]
+tags: ["Express.js", "RBAC", "JWT", "Security", "Node.js"]
 ---
 
-Role-Based Access Control (RBAC) is essential for any multi-user application. When building Rakshak Fraud Platform, we needed granular permissions for admins, analysts, and auditors.
+Role-Based Access Control (RBAC) is essential for any multi-user application. When building Rakshak Fraud Platform, we needed granular permissions for admins, analysts, and auditors — each with different access levels to fraud analysis data.
+
+## Why Build It from Scratch?
+
+Libraries exist for RBAC, but implementing it manually taught me how authorization actually works at the middleware level. Understanding the internals made debugging permission issues significantly easier and gave full control over the authorization flow.
 
 ## RBAC Fundamentals
 
 RBAC assigns permissions to roles, and roles to users. Instead of checking individual permissions per user, you check the user's role:
 
-- **Admin** — Full system access, user management
-- **Analyst** — View and flag transactions, run reports
+- **Admin** — Full system access, user management, system configuration
+- **Analyst** — View and flag transactions, run fraud reports, trigger AI analysis
 - **Auditor** — Read-only access to audit logs and reports
 
 ## Implementation with Express.js
@@ -53,7 +57,7 @@ router.delete("/users/:id", authenticate, authorize("admin"), deleteUser);
 
 ## MongoDB Schema Design
 
-Store roles as an enum on the User model with a separate Permissions collection for fine-grained control when needed.
+Store roles as an enum on the User model with a separate Permissions collection for fine-grained control when needed. The three-tier model keeps the schema simple while supporting future permission expansion.
 
 ## Security Best Practices
 
@@ -65,4 +69,4 @@ Store roles as an enum on the User model with a separate Permissions collection 
 
 ## Outcome
 
-This RBAC implementation secured Rakshak's fraud detection pipeline, ensuring analysts could flag suspicious transactions without accessing admin-level system configuration. The pattern is now reusable across all our Node.js projects.
+This RBAC implementation secured Rakshak's fraud detection pipeline, ensuring analysts could flag suspicious transactions and trigger AI-powered fraud scoring without accessing admin-level system configuration. The pattern is now reusable across all our Node.js projects.

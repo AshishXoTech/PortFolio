@@ -1,34 +1,38 @@
 ---
-title: "Building HackFlow AI — A Hackathon Management Platform"
-description: "How we built an AI-powered hackathon platform with Next.js, FastAPI, and PostgreSQL for university events."
+title: "Building HackFlow AI — Microservices + AI in 48 Hours"
+description: "How we architected a developer evaluation platform using Next.js, FastAPI, PostgreSQL, and AI-powered repository analysis in a 48-hour hackathon sprint."
 date: 2025-03-15
-tags: ["Next.js", "FastAPI", "PostgreSQL", "Hackathons"]
+tags: ["Next.js", "FastAPI", "PostgreSQL", "Microservices", "AI"]
 ---
 
-Building HackFlow AI started with a simple observation: university hackathons are chaotic. Registration spreadsheets, manual judging, and scattered communication channels make organizing events painful for everyone involved.
+Building HackFlow AI started with a problem every hackathon organizer faces: evaluating dozens of project submissions manually is slow, inconsistent, and painful. We wanted to automate the evaluation pipeline without losing the nuance of human judgment.
 
 ## The Problem
 
-Organizers juggle Google Forms, WhatsApp groups, and Excel sheets. Participants lose track of submission deadlines. Judges have no standardized rubric system. We needed a unified platform.
+Hackathon judges spend hours reviewing codebases, often skimming through repositories without understanding the actual engineering effort involved. We needed a system that could analyze GitHub repositories automatically and surface meaningful project insights.
 
 ## Architecture
 
-We chose a hybrid stack:
+We chose a microservice architecture to separate concerns:
 
 - **Next.js 14** for the frontend with App Router and server components
 - **Node.js + Prisma** for the main API layer with PostgreSQL
-- **FastAPI** microservice for AI-powered judging assistance
-- **JWT authentication** with role-based access for organizers, mentors, and participants
+- **FastAPI** microservice for AI-powered repository analysis
+- **JWT authentication** with role-based access for organizers and participants
+
+The two backend services communicate through REST APIs. The FastAPI service handles the computationally intensive repository analysis while the Node.js service manages user authentication, leaderboards, and data persistence.
 
 ## Key Features
 
-1. Real-time team formation and project submission
-2. AI-assisted code review and project scoring
-3. Live leaderboard during hackathon events
-4. Automated email notifications via Resend
+1. Automated GitHub repository analysis using AI
+2. Real-time leaderboards with transparent scoring metrics
+3. JWT-based authentication with role separation
+4. Automated ranking that reduces manual review effort
 
-## Lessons Learned
+## 48-Hour Sprint Lessons
 
-Building for hackathon organizers taught us that UX simplicity beats feature richness. The most-used feature was the submission countdown timer — sometimes the simplest things matter most.
+Building under time pressure forces architectural clarity. We spent the first 4 hours designing the database schema and API contracts before writing any feature code. That upfront investment prevented integration issues when connecting the two backend services.
 
-HackFlow AI won our university internal hackathon and is now being adopted by multiple departments at UEM Jaipur.
+The most important lesson: microservices add complexity, but when each service has a clear boundary, parallel development becomes significantly faster. Two people can work on separate services without merge conflicts.
+
+HackFlow AI won our university internal hackathon and demonstrated that AI-assisted evaluation can meaningfully reduce manual review overhead.

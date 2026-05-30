@@ -5,6 +5,7 @@ import {
   autocompleteCommand,
   getAchievementsLines,
   getCatResumeLines,
+  getCatSecretLines,
   getContactLines,
   getEducationLines,
   getHelpLines,
@@ -127,6 +128,8 @@ export function useTerminalHistory(): UseTerminalHistoryReturn {
       } else if (lower === "cat resume.pdf") {
         outputLines.push(...getCatResumeLines());
         setTriggerResumeDownload(true);
+      } else if (lower === "cat secret.txt") {
+        outputLines.push(...getCatSecretLines());
       } else if (lower === "sudo hire ashish") {
         outputLines.push(...getSudoHireLines());
       } else if (lower === "rm -rf portfolio") {

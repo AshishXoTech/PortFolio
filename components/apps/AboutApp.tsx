@@ -142,41 +142,45 @@ export function AboutApp(): JSX.Element {
 
         {/* Right column */}
         <div className="min-w-0 flex-1">
-          <SectionHeader>// about me</SectionHeader>
+          <SectionHeader>{"// about me"}</SectionHeader>
 
           <motion.p
             variants={itemVariants}
             className="mb-3 font-sans text-sm leading-relaxed text-[#e0e0e0]"
           >
-            I&apos;m Ashish Kumar Jha, a Full Stack Developer pursuing B.Tech in
-            Computer Science at University of Engineering &amp; Management (UEM)
-            Jaipur (2024–2028), maintaining a CGPA of 8.0/10. I&apos;m focused on
-            landing a Software Engineer role and building products that feel as
-            polished as they are functional.
+            I&apos;m Ashish Kumar Jha, a B.Tech Computer Science student at the
+            University of Engineering &amp; Management, Jaipur. My primary focus
+            is full-stack web development using the MERN ecosystem, Next.js,
+            TypeScript, FastAPI, PostgreSQL, and modern cloud deployment
+            workflows. Most of my time is split between building products,
+            participating in hackathons, and improving problem-solving skills
+            through DSA.
           </motion.p>
 
           <motion.p
             variants={itemVariants}
             className="mb-3 font-sans text-sm leading-relaxed text-[#e0e0e0]"
           >
-            I build end-to-end applications across the MERN stack, Next.js,
-            TypeScript, FastAPI, and PostgreSQL — from HackFlow AI&apos;s
-            hackathon platform to Rakshak&apos;s fraud detection pipeline and
-            AI-powered dashboards. Docker, Redis, and cloud deployment are part
-            of my regular workflow.
+            I enjoy building systems that go beyond CRUD applications. My
+            projects usually involve authentication, authorization, AI
+            integrations, microservices, caching, database design, and
+            production deployment concerns. I prefer understanding how systems
+            work internally instead of relying entirely on abstractions.
           </motion.p>
 
           <motion.p
             variants={itemVariants}
             className="mb-6 font-sans text-sm leading-relaxed text-[#e0e0e0]"
           >
-            I&apos;m a 3× Internal Hackathon Winner, 2× National Finalist, and 1×
-            International Finalist. Outside of shipping features, I&apos;m deep in
-            Data Structures &amp; Algorithms and Java — sharpening the fundamentals
-            that power better system design decisions.
+            My long-term goal is to become a software engineer focused on
+            building reliable products at scale. Right now I&apos;m investing
+            heavily in Java, Data Structures &amp; Algorithms, and System Design
+            because writing features is only one part of engineering—the
+            other part is designing systems that continue working as complexity
+            grows.
           </motion.p>
 
-          <SectionHeader>// education</SectionHeader>
+          <SectionHeader>{"// education"}</SectionHeader>
 
           <motion.div
             variants={itemVariants}
@@ -195,7 +199,7 @@ export function AboutApp(): JSX.Element {
             </div>
           </motion.div>
 
-          <SectionHeader>// currently learning</SectionHeader>
+          <SectionHeader>{"// currently learning"}</SectionHeader>
 
           <motion.div variants={itemVariants} className="flex flex-wrap gap-2">
             {["Java", "Data Structures & Algorithms", "System Design"].map(
