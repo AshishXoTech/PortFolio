@@ -9,23 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0a0a0a",
+        background: "#050510",
         green: "#00ff41",
         purple: "#7c3aed",
         red: "#ff003c",
-        text: "#e0e0e0",
-        muted: "#888888",
-        glass: "rgba(12, 12, 12, 0.88)",
+        gold: "#f59e0b",
+        text: "#e8e8f0",
+        muted: "#4a4a6a",
+        glass: "rgba(8, 8, 20, 0.75)",
       },
       borderColor: {
-        glass: "rgba(255, 255, 255, 0.07)",
+        glass: "rgba(255, 255, 255, 0.06)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jetbrains-mono)", "monospace"],
+        sans: ['"DM Sans"', "system-ui", "sans-serif"],
+        display: ['"Syne"', "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "monospace"],
       },
       backdropBlur: {
-        glass: "14px",
+        glass: "20px",
       },
     },
   },

@@ -11,10 +11,12 @@ import {
   Wrench,
 } from "lucide-react";
 import { AppIcon } from "@/components/os/AppIcon";
+import { EngineerUniverse } from "@/components/os/EngineerUniverse";
 import { Taskbar } from "@/components/os/Taskbar";
 import { WindowManager } from "@/components/os/WindowManager";
 import { Scene } from "@/components/three/Scene";
 import { useIsMobile } from "@/hooks/useMediaQuery";
+import { useOS } from "@/hooks/useOS";
 import type { AppId } from "@/types/os";
 
 interface DesktopApp {
@@ -35,15 +37,13 @@ const DESKTOP_APPS: DesktopApp[] = [
 
 export function Desktop(): JSX.Element {
   const isMobile = useIsMobile();
+  const { openApp } = useOS();
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-background pb-20 pt-8">
-        <header className="border-b border-glass px-4 pb-4">
-          <h1 className="font-mono text-xl text-green">AshishOS</h1>
-          <p className="text-sm text-muted">Mobile view — scroll to explore apps</p>
-        </header>
-        <main className="space-y-4 p-4">
+      <div className="min-h-screen bg-background pb-20">
+        <EngineerUniverse onOpenApp={openApp} windowActionsEnabled={false} />
+        <main className="relative z-10 space-y-4 p-4">
           {DESKTOP_APPS.map((app) => (
             <section
               key={app.id}
@@ -64,14 +64,10 @@ export function Desktop(): JSX.Element {
   }
 
   return (
-    <div className="relative h-screen overflow-hidden bg-background">
-      <Scene />
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.12)_0%,_transparent_55%)]"
-        aria-hidden="true"
-      />
+    <div className="relative min-h-screen bg-background">
+      <Scene className="fixed" />
 
-      <div className="relative z-10 grid h-[calc(100vh-48px)] grid-cols-[repeat(auto-fill,minmax(96px,1fr))] auto-rows-min gap-4 p-6 content-start">
+      <div className="fixed left-4 top-4 z-30 grid grid-cols-1 gap-3">
         {DESKTOP_APPS.map((app) => (
           <AppIcon
             key={app.id}
@@ -82,6 +78,7 @@ export function Desktop(): JSX.Element {
         ))}
       </div>
 
+      <EngineerUniverse onOpenApp={openApp} />
       <Taskbar />
     </div>
   );

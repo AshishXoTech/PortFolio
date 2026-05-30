@@ -34,12 +34,12 @@ function LogLine({ line }: { line: string }): JSX.Element {
   const okIndex = line.indexOf(okMarker);
 
   if (okIndex === -1) {
-    return <span className="text-[#e0e0e0]">{line || "\u00A0"}</span>;
+    return <span className="text-[#e8e8f0]">{line || "\u00A0"}</span>;
   }
 
   return (
     <>
-      <span className="text-[#e0e0e0]">{line.slice(0, okIndex)}</span>
+      <span className="text-[#e8e8f0]">{line.slice(0, okIndex)}</span>
       <span className="font-bold text-[#00ff41]">{okMarker}</span>
     </>
   );
@@ -70,7 +70,7 @@ function MatrixCanvas(): JSX.Element {
     }));
 
     const draw = (): void => {
-      ctx.fillStyle = "rgba(10, 10, 10, 0.12)";
+      ctx.fillStyle = "rgba(5, 5, 16, 0.12)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${FONT_SIZE}px "JetBrains Mono", monospace`;
@@ -176,7 +176,7 @@ export default function BootScreen({
 
   return (
     <div
-      className="fixed inset-0 z-50 cursor-default bg-[#0a0a0a]"
+      className="fixed inset-0 z-50 cursor-default bg-[#050510]"
       onClick={handleSkip}
       role="presentation"
     >
@@ -195,7 +195,7 @@ export default function BootScreen({
         {stage === "logs" && (
           <motion.div
             key="logs"
-            className="absolute inset-0 flex items-center bg-[#0a0a0a] px-8"
+            className="absolute inset-0 flex items-center bg-[#050510] px-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -219,13 +219,13 @@ export default function BootScreen({
         {stage === "progress" && (
           <motion.div
             key="progress"
-            className="absolute inset-0 flex flex-col items-center justify-center bg-[#0a0a0a]"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-[#050510]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <p className="mb-3 font-sans text-[11px] tracking-[0.35em] text-[#888888]">
+            <p className="mb-3 font-sans text-[11px] tracking-[0.35em] text-[#4a4a6a]">
               AshishOS
             </p>
             <p className="mb-2 font-mono text-[11px] text-[#00ff41]">
@@ -259,7 +259,7 @@ export default function BootScreen({
       )}
 
       {stage !== "flash" && (
-        <p className="pointer-events-none fixed bottom-4 right-4 font-sans text-[11px] text-[#333333]">
+        <p className="pointer-events-none fixed bottom-4 right-4 font-sans text-[11px] text-[#4a4a6a]">
           Press any key to skip
         </p>
       )}
