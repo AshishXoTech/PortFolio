@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   BookOpen,
@@ -14,7 +15,8 @@ import { AppIcon } from "@/components/os/AppIcon";
 import { EngineerUniverse } from "@/components/os/EngineerUniverse";
 import { Taskbar } from "@/components/os/Taskbar";
 import { WindowManager } from "@/components/os/WindowManager";
-import { Scene } from "@/components/three/Scene";
+import HeroScene from "@/components/three/HeroScene";
+import { BokehOrbs } from "@/components/ui/BokehOrbs";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useOS } from "@/hooks/useOS";
 import type { AppId } from "@/types/os";
@@ -35,9 +37,57 @@ const DESKTOP_APPS: DesktopApp[] = [
   { id: "contact", label: "Contact", icon: Mail },
 ];
 
+interface HeroPointerOffset {
+  x: number;
+  y: number;
+}
+
 export function Desktop(): JSX.Element {
   const isMobile = useIsMobile();
   const { openApp } = useOS();
+  const frameRef = useRef(0);
+  const pointerRef = useRef<HeroPointerOffset>({ x: 0, y: 0 });
+  const [bokehOffset, setBokehOffset] = useState<HeroPointerOffset>({
+    x: 0,
+    y: 0,
+  });
+
+  useEffect(() => {
+    if (isMobile) {
+      setBokehOffset({ x: 0, y: 0 });
+      return undefined;
+    }
+
+    const updateOffset = (): void => {
+      frameRef.current = 0;
+      setBokehOffset({
+        x: pointerRef.current.x * 12,
+        y: pointerRef.current.y * 8,
+      });
+    };
+
+    const handleMouseMove = (event: MouseEvent): void => {
+      pointerRef.current = {
+        x: (event.clientX / window.innerWidth) * 2 - 1,
+        y: (event.clientY / window.innerHeight) * 2 - 1,
+      };
+
+      if (frameRef.current === 0) {
+        frameRef.current = window.requestAnimationFrame(updateOffset);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+
+      if (frameRef.current !== 0) {
+        window.cancelAnimationFrame(frameRef.current);
+        frameRef.current = 0;
+      }
+    };
+  }, [isMobile]);
 
   if (isMobile) {
     return (
@@ -65,7 +115,10 @@ export function Desktop(): JSX.Element {
 
   return (
     <div className="relative min-h-screen bg-background">
-      <Scene className="fixed" />
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <BokehOrbs offsetX={bokehOffset.x} offsetY={bokehOffset.y} />
+        <HeroScene />
+      </div>
 
       <div className="fixed left-4 top-4 z-30 grid grid-cols-1 gap-3">
         {DESKTOP_APPS.map((app) => (
