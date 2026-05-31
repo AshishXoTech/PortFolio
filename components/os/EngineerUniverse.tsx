@@ -3,18 +3,18 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
-  FileJson2,
   Github,
   Mail,
   ServerCog,
-  Terminal,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { AchievementsApp } from "@/components/apps/AchievementsApp";
 import { SkillsApp } from "@/components/apps/SkillsApp";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { EngineerStory } from "@/components/sections/EngineerStory";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
+import { TerminalSection } from "@/components/sections/TerminalSection";
 import HeroScene from "@/components/three/HeroScene";
 import type { AppId } from "@/types/os";
 
@@ -551,25 +551,12 @@ export function EngineerUniverse({
         <AchievementsApp />
       </section>
 
-      <section
-        data-universe-scene
-        className="mx-auto grid min-h-[80vh] w-full max-w-[1200px] items-center gap-6 px-6 py-20 md:grid-cols-2 md:px-12"
-      >
-        <button type="button" onClick={() => onOpenApp("terminal")} disabled={!windowActionsEnabled} className="glass-panel rounded-lg p-5 text-left transition hover:border-green/40 disabled:cursor-default">
-          <Terminal className="h-8 w-8 text-green" aria-hidden="true" />
-          <h2 className="mt-5 font-display text-3xl font-bold text-text">Scene 07 / Terminal</h2>
-          <p className="mt-3 font-mono text-sm leading-7 text-text/65">
-            run whoami, projects, skills, wins, contact
-          </p>
-        </button>
-        <button type="button" onClick={() => onOpenApp("contact")} disabled={!windowActionsEnabled} className="glass-panel rounded-lg p-5 text-left transition hover:border-green/40 disabled:cursor-default">
-          <FileJson2 className="h-8 w-8 text-purple" aria-hidden="true" />
-          <h2 className="mt-5 font-display text-3xl font-bold text-text">Scene 08 / Contact</h2>
-          <p className="mt-3 font-mono text-sm leading-7 text-text/65">
-            email: ashish863863@gmail.com<br />
-            github: AshishXoTech
-          </p>
-        </button>
+      <section data-universe-scene>
+        <TerminalSection />
+      </section>
+
+      <section data-universe-scene>
+        <ContactSection />
       </section>
 
       <footer className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 border-t border-glass px-6 py-8 font-mono text-xs text-text/50 md:px-12">

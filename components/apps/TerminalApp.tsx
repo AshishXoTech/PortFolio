@@ -16,6 +16,11 @@ const PROMPT = "[ashish@portfolio ~]$ ";
 const OUTPUT_TYPEWRITER_MS = 8;
 const WELCOME_TYPEWRITER_MS = 25;
 const MAX_HISTORY = 100;
+const QUICK_COMMANDS = ["help", "whoami", "projects", "neofetch", "sudo hire ashish"];
+
+interface TerminalAppProps {
+  showcase?: boolean;
+}
 
 type Tone = "prompt" | "default" | "error" | "success" | "muted";
 
@@ -161,25 +166,13 @@ function getWelcomeLines(): TerminalLine[] {
   return [
     createLine("AshishOS Terminal v1.0.0", "default", WELCOME_TYPEWRITER_MS),
     createLine(
-      "Kernel: Next.js 14 | Shell: bash 5.2",
+      "Kernel: Next.js 14 | Shell: bash 5.2 | Build #247",
       "default",
       WELCOME_TYPEWRITER_MS
     ),
-    createLine(
-      "Full-stack systems, AI pipelines, and product-grade interfaces.",
-      "success",
-      WELCOME_TYPEWRITER_MS
-    ),
-    createLine(
-      "Currently compiling Java, DSA, and the discipline to ship better software.",
-      "default",
-      WELCOME_TYPEWRITER_MS
-    ),
-    createLine(
-      "Type help for available commands.",
-      "default",
-      WELCOME_TYPEWRITER_MS
-    ),
+    createLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "muted", WELCOME_TYPEWRITER_MS),
+    createLine("Welcome. You are now inside Ashish's portfolio OS.", "success", WELCOME_TYPEWRITER_MS),
+    createLine("Type 'help' to see available commands.", "default", WELCOME_TYPEWRITER_MS),
     createLine("", "default", WELCOME_TYPEWRITER_MS),
   ];
 }
@@ -449,7 +442,7 @@ function RenderedLine({
   );
 }
 
-export default function TerminalApp(): JSX.Element {
+export default function TerminalApp({ showcase = false }: TerminalAppProps): JSX.Element {
   const { openApp } = useOS();
   const [lines, setLines] = useState<TerminalLine[]>(getWelcomeLines);
   const [inputValue, setInputValue] = useState("");
@@ -640,53 +633,108 @@ export default function TerminalApp(): JSX.Element {
     setInputValue("");
   };
 
+  const runQuickCommand = (command: string): void => {
+    executeCommand(command);
+    setInputValue("");
+    inputRef.current?.focus();
+  };
+
   return (
     <div
-      className="flex h-full min-h-[360px] flex-col bg-[#040410] font-mono text-[13px] leading-[1.75]"
+      className={[
+        "flex flex-col font-mono text-[13px] leading-[1.75]",
+        showcase ? "" : "h-full min-h-[360px]",
+      ].join(" ")}
       onClick={() => inputRef.current?.focus()}
       role="presentation"
     >
       <div
-        ref={containerRef}
-        className="window-scrollbar min-h-0 flex-1 overflow-y-auto px-3 py-3"
+        className={[
+          "terminal-window-shell flex flex-col overflow-hidden rounded-2xl bg-[#030310]",
+          showcase ? "h-[520px]" : "min-h-0 flex-1",
+        ].join(" ")}
       >
-        {lines.map((line) => {
-          if (activeLine?.id === line.id) {
-            return (
-              <AnimatedLine
-                key={line.id}
-                line={line}
-                onComplete={() => handleLineComplete(line.id)}
-                onTick={scrollToBottom}
-              />
-            );
-          }
+        <div className="flex h-11 shrink-0 items-center border-b border-white/[0.04] bg-[#0a0a18] px-4">
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+            <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+            <span className="h-3 w-3 rounded-full bg-[#28ca42]" />
+          </div>
+          <div className="flex flex-1 justify-center font-mono text-[11px] text-[#555]">
+            terminal.sh — bash
+          </div>
+          <div className="hidden items-center gap-2 font-mono text-[9px] sm:flex">
+            <span className="inline-flex items-center gap-1.5 text-green/60">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green" />
+              LIVE
+            </span>
+            <span className="text-[#333]">|</span>
+            <span className="text-[#333]">AshishOS v1.0.0</span>
+          </div>
+        </div>
 
-          if (!completedLineIds.has(line.id)) return null;
+        <div className="flex min-h-0 flex-1 flex-col p-5">
+          <div
+            ref={containerRef}
+            className="window-scrollbar min-h-0 flex-1 overflow-y-auto"
+          >
+            {lines.map((line) => {
+              if (activeLine?.id === line.id) {
+                return (
+                  <AnimatedLine
+                    key={line.id}
+                    line={line}
+                    onComplete={() => handleLineComplete(line.id)}
+                    onTick={scrollToBottom}
+                  />
+                );
+              }
 
-          return <RenderedLine key={line.id} line={line} />;
-        })}
+              if (!completedLineIds.has(line.id)) return null;
+
+              return <RenderedLine key={line.id} line={line} />;
+            })}
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            className="mt-2 flex shrink-0 items-center gap-2 border-t border-white/[0.03] pt-2"
+          >
+            <span className="shrink-0 text-[#00ff41]">{PROMPT}</span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+              onKeyDown={handleKeyDown}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              className="min-w-0 flex-1 border-0 bg-transparent text-[#e0e0e0] caret-green outline-none ring-0 focus:outline-none focus:ring-0"
+              aria-label="Terminal command input"
+            />
+          </form>
+        </div>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex shrink-0 items-center gap-1 border-t border-white/[0.05] px-3 py-2.5"
-      >
-        <span className="shrink-0 text-[#00ff41]">{PROMPT}</span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
-          onKeyDown={handleKeyDown}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
-          className="min-w-0 flex-1 border-0 bg-transparent text-[#c8c8c8] outline-none ring-0 focus:outline-none focus:ring-0"
-          aria-label="Terminal command input"
-        />
-      </form>
+      {showcase ? (
+        <div className="terminal-command-chips mt-5 flex flex-wrap justify-center gap-2 rounded-full bg-[rgba(8,8,20,0.6)] px-5 py-3">
+          {QUICK_COMMANDS.map((command) => (
+            <button
+              key={command}
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                runQuickCommand(command);
+              }}
+              className="rounded-full border border-white/[0.06] px-3.5 py-1.5 font-mono text-[11px] text-[#444] transition hover:border-green/20 hover:bg-green/[0.04] hover:text-green"
+            >
+              {command}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
