@@ -1,189 +1,265 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
-import {
-  SKILL_TABS,
-  getSkillsByTab,
-  type SkillTab,
-} from "@/lib/data/skills";
-import type { Skill, SkillCategoryName } from "@/types";
-import { cn } from "@/lib/utils";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-type ProficiencyLevel = "expert" | "advanced" | "learning";
+type SkillCategory =
+  | "Frontend"
+  | "Backend"
+  | "Database"
+  | "DevOps"
+  | "AI"
+  | "Learning";
 
-function getProficiencyLevel(percent: number): ProficiencyLevel {
-  if (percent > 85) return "expert";
-  if (percent > 65) return "advanced";
-  return "learning";
+type SkillTab = "All" | SkillCategory;
+
+interface SkillProcess {
+  category: SkillCategory;
+  name: string;
+  proficiency: number;
 }
 
-function getBarColor(percent: number): string {
-  const level = getProficiencyLevel(percent);
-  if (level === "expert") return "#00ff41";
-  if (level === "advanced") return "#7c3aed";
+interface CategoryStyle {
+  color: string;
+  rgb: string;
+}
+
+const TABS: SkillTab[] = [
+  "All",
+  "Frontend",
+  "Backend",
+  "Database",
+  "DevOps",
+  "AI",
+  "Learning",
+];
+
+const SKILLS: SkillProcess[] = [
+  { name: "React.js", category: "Frontend", proficiency: 90 },
+  { name: "Next.js", category: "Frontend", proficiency: 88 },
+  { name: "TypeScript", category: "Frontend", proficiency: 82 },
+  { name: "Tailwind CSS", category: "Frontend", proficiency: 85 },
+  { name: "Framer Motion", category: "Frontend", proficiency: 72 },
+  { name: "HTML CSS", category: "Frontend", proficiency: 92 },
+  { name: "Node.js", category: "Backend", proficiency: 88 },
+  { name: "Express.js", category: "Backend", proficiency: 86 },
+  { name: "FastAPI", category: "Backend", proficiency: 70 },
+  { name: "REST APIs", category: "Backend", proficiency: 90 },
+  { name: "JWT Auth", category: "Backend", proficiency: 85 },
+  { name: "RBAC", category: "Backend", proficiency: 80 },
+  { name: "MongoDB", category: "Database", proficiency: 84 },
+  { name: "PostgreSQL", category: "Database", proficiency: 80 },
+  { name: "Redis", category: "Database", proficiency: 72 },
+  { name: "Prisma ORM", category: "Database", proficiency: 78 },
+  { name: "Mongoose", category: "Database", proficiency: 82 },
+  { name: "Docker", category: "DevOps", proficiency: 78 },
+  { name: "Git GitHub", category: "DevOps", proficiency: 92 },
+  { name: "Postman", category: "DevOps", proficiency: 85 },
+  { name: "OpenAI API", category: "AI", proficiency: 80 },
+  { name: "LLM Integration", category: "AI", proficiency: 72 },
+  { name: "Java", category: "Learning", proficiency: 45 },
+  { name: "DSA", category: "Learning", proficiency: 50 },
+  { name: "System Design", category: "Learning", proficiency: 40 },
+];
+
+const CATEGORY_STYLES: Record<SkillCategory, CategoryStyle> = {
+  Frontend: { color: "#00ff41", rgb: "0, 255, 65" },
+  Backend: { color: "#7c3aed", rgb: "124, 58, 237" },
+  Database: { color: "#ff003c", rgb: "255, 0, 60" },
+  DevOps: { color: "#ffbd2e", rgb: "255, 189, 46" },
+  AI: { color: "#00bfff", rgb: "0, 191, 255" },
+  Learning: { color: "#ff8c00", rgb: "255, 140, 0" },
+};
+
+function getUsageColor(proficiency: number): string {
+  if (proficiency > 85) return "#00ff41";
+  if (proficiency >= 65) return "#7c3aed";
   return "#ff8c00";
 }
 
-const CATEGORY_BADGE_STYLES: Record<SkillCategoryName, string> = {
-  Frontend: "bg-[#00ff4120] text-[#00ff41] border-[#00ff41]/40",
-  Backend: "bg-[#7c3aed20] text-[#7c3aed] border-[#7c3aed]/40",
-  Database: "bg-[#00ff4120] text-[#00ff41] border-[#00ff41]/30",
-  DevOps: "bg-[#88888820] text-[#aaaaaa] border-[#888888]/40",
-  "AI/ML": "bg-[#7c3aed20] text-[#7c3aed] border-[#7c3aed]/40",
-  Learning: "bg-[#ff8c0020] text-[#ff8c00] border-[#ff8c00]/40",
-};
-
-function getAbbreviation(name: string): string {
-  const words = name.replace(/[./]/g, " ").split(/\s+/).filter(Boolean);
-  if (words.length >= 2) {
-    return `${words[0][0] ?? ""}${words[1][0] ?? ""}`.toUpperCase();
-  }
-  return name.slice(0, 2).toUpperCase();
+function getUsageShadow(proficiency: number): string {
+  if (proficiency > 85) return "0 0 8px rgba(0,255,65,0.5)";
+  if (proficiency >= 65) return "0 0 8px rgba(124,58,237,0.5)";
+  return "none";
 }
-
-const listVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.04 },
-  },
-};
-
-const rowVariants = {
-  hidden: { opacity: 0, x: -8 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: "spring", stiffness: 120, damping: 18 },
-  },
-};
 
 interface SkillRowProps {
-  skill: Skill;
+  hasEntered: boolean;
+  index: number;
+  skill: SkillProcess;
 }
 
-function SkillRow({ skill }: SkillRowProps): JSX.Element {
-  const barColor = getBarColor(skill.proficiency);
-  const abbrev = getAbbreviation(skill.name);
+function SkillRow({ hasEntered, index, skill }: SkillRowProps): JSX.Element {
+  const categoryStyle = CATEGORY_STYLES[skill.category];
+  const usageColor = getUsageColor(skill.proficiency);
+  const [isFilled, setIsFilled] = useState(false);
+
+  useEffect(() => {
+    setIsFilled(false);
+
+    if (!hasEntered) return undefined;
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIsFilled(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [hasEntered, skill.name]);
 
   return (
-    <motion.div
-      variants={rowVariants}
-      className="grid grid-cols-[minmax(0,1.6fr)_minmax(0,0.9fr)_minmax(0,0.7fr)_minmax(0,1.2fr)] items-center gap-3 border-b border-[rgba(255,255,255,0.04)] px-2 py-2.5 transition-colors duration-200 hover:bg-[rgba(255,255,255,0.03)]"
+    <div
+      className="grid h-11 grid-cols-[minmax(130px,1.5fr)_minmax(92px,0.8fr)_minmax(120px,1fr)_44px] items-center gap-3 px-3 transition-colors duration-200 odd:bg-[#080814] even:bg-[#060610] hover:bg-[#0c0c1e]"
+      style={{ transitionDelay: `${index * 30}ms` }}
     >
-      <div className="flex min-w-0 items-center gap-2.5">
+      <span className="truncate font-mono text-[13px] text-[#e0e0e0]">
+        {skill.name}
+      </span>
+
+      <span
+        className="inline-flex w-fit items-center gap-1.5 rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.05em]"
+        style={{
+          backgroundColor: `rgba(${categoryStyle.rgb}, 0.15)`,
+          borderColor: `rgba(${categoryStyle.rgb}, 0.26)`,
+          color: categoryStyle.color,
+        }}
+      >
         <span
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded border border-[#00ff41]/30 bg-[#00ff4115] font-mono text-[9px] font-bold text-[#00ff41]"
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ backgroundColor: categoryStyle.color }}
           aria-hidden="true"
-        >
-          {abbrev}
-        </span>
-        <span className="truncate font-mono text-[13px] text-[#e0e0e0]">
-          {skill.name}
-        </span>
+        />
+        {skill.category}
+      </span>
+
+      <div className="h-[3px] overflow-hidden rounded-[1px] bg-[#111]">
+        <div
+          className="h-full rounded-[1px]"
+          style={{
+            backgroundColor: usageColor,
+            boxShadow: getUsageShadow(skill.proficiency),
+            transition:
+              "width 1.4s cubic-bezier(0.16, 1, 0.3, 1)",
+            transitionDelay: `${index * 60}ms`,
+            width: isFilled ? `${skill.proficiency}%` : "0%",
+          }}
+        />
       </div>
 
-      <div>
-        <span
-          className={cn(
-            "inline-block rounded border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wide",
-            CATEGORY_BADGE_STYLES[skill.category]
-          )}
-        >
-          {skill.category}
-        </span>
-      </div>
-
-      <span className="font-mono text-[11px] text-[#555555]">{skill.version}</span>
-
-      <div className="flex min-w-0 items-center gap-2">
-        <div className="relative h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-[#1a1a1a]">
-          <motion.div
-            className="absolute inset-y-0 left-0 rounded-full"
-            style={{ backgroundColor: barColor }}
-            initial={{ width: 0 }}
-            animate={{ width: `${skill.proficiency}%` }}
-            transition={{ type: "spring", stiffness: 80, damping: 18, duration: 1 }}
-          />
-        </div>
-        <span
-          className="w-8 shrink-0 text-right font-mono text-[11px] tabular-nums"
-          style={{ color: barColor }}
-        >
-          {skill.proficiency}%
-        </span>
-      </div>
-    </motion.div>
+      <span
+        className="text-right font-mono text-[11px] tabular-nums"
+        style={{ color: usageColor }}
+      >
+        {skill.proficiency}%
+      </span>
+    </div>
   );
 }
 
 export function SkillsApp(): JSX.Element {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<SkillTab>("All");
+  const [hasEntered, setHasEntered] = useState(false);
+  const [contentVisible, setContentVisible] = useState(true);
 
-  const filteredSkills = useMemo(
-    () => getSkillsByTab(activeTab),
-    [activeTab]
-  );
+  const filteredSkills = useMemo(() => {
+    if (activeTab === "All") return SKILLS;
+    return SKILLS.filter((skill) => skill.category === activeTab);
+  }, [activeTab]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (!entry?.isIntersecting) return;
+
+        setHasEntered(true);
+        observer.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    setContentVisible(false);
+
+    const frameId = window.requestAnimationFrame(() => {
+      setContentVisible(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [activeTab]);
 
   return (
-    <div className="flex h-full min-h-[420px] flex-col bg-[#0a0a0a]">
+    <div
+      ref={sectionRef}
+      className="flex h-full min-h-[420px] flex-col bg-[#050510]"
+    >
       <nav
-        className="flex shrink-0 gap-1 overflow-x-auto border-b border-[rgba(255,255,255,0.06)] px-1"
-        aria-label="Skill categories"
+        className="flex shrink-0 gap-1 overflow-x-auto border-b border-[#111] px-2"
+        aria-label="Skill process categories"
       >
-        {SKILL_TABS.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setActiveTab(tab)}
-            className={cn(
-              "shrink-0 border-b-2 px-3 py-2.5 font-mono text-[11px] transition-colors",
-              activeTab === tab
-                ? "border-[#00ff41] text-[#00ff41]"
-                : "border-transparent text-[#888888] hover:text-[#e0e0e0]"
-            )}
-          >
-            {tab}
-          </button>
-        ))}
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab;
+
+          return (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              className={[
+                "shrink-0 border-b-2 px-3 py-3 font-mono text-[11px] uppercase tracking-[0.05em] transition-colors duration-200",
+                isActive
+                  ? "border-[#00ff41] text-[#00ff41]"
+                  : "border-transparent text-[#444] hover:text-[#e0e0e0]",
+              ].join(" ")}
+            >
+              {tab}
+            </button>
+          );
+        })}
       </nav>
 
-      <div className="window-scrollbar min-h-0 flex-1 overflow-y-auto p-3">
+      <div className="window-scrollbar min-h-0 flex-1 overflow-auto p-3">
         <div
-          className="grid grid-cols-[minmax(0,1.6fr)_minmax(0,0.9fr)_minmax(0,0.7fr)_minmax(0,1.2fr)] gap-3 border-b border-[rgba(255,255,255,0.08)] px-2 pb-2"
+          className="grid grid-cols-[minmax(130px,1.5fr)_minmax(92px,0.8fr)_minmax(120px,1fr)_44px] gap-3 border-b border-[#111] px-3 pb-2"
           aria-hidden="true"
         >
-          <span className="font-mono text-[11px] uppercase tracking-wider text-[#555555]">
-            Process
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-[#555555]">
-            Category
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-[#555555]">
-            Version
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-[#555555]">
-            CPU Usage
+          <span className="font-mono text-[10px] text-[#333]">PROCESS</span>
+          <span className="font-mono text-[10px] text-[#333]">CATEGORY</span>
+          <span className="font-mono text-[10px] text-[#333]">CPU USAGE</span>
+          <span className="text-right font-mono text-[10px] text-[#333]">
+            %
           </span>
         </div>
 
-        <motion.div
+        <div
           key={activeTab}
-          variants={listVariants}
-          initial="hidden"
-          animate="visible"
+          className={[
+            "pt-1 transition-opacity duration-300",
+            contentVisible ? "opacity-100" : "opacity-0",
+          ].join(" ")}
         >
-          {filteredSkills.map((skill) => (
-            <SkillRow key={skill.id} skill={skill} />
+          {filteredSkills.map((skill, index) => (
+            <SkillRow
+              key={`${activeTab}-${skill.name}`}
+              hasEntered={hasEntered}
+              index={index}
+              skill={skill}
+            />
           ))}
-        </motion.div>
-
-        {filteredSkills.length === 0 && (
-          <p className="py-8 text-center font-mono text-xs text-[#555555]">
-            No processes in this category.
-          </p>
-        )}
+        </div>
       </div>
     </div>
   );
