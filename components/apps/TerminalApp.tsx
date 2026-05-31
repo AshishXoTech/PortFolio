@@ -16,6 +16,8 @@ const PROMPT = "[ashish@portfolio ~]$ ";
 const OUTPUT_TYPEWRITER_MS = 8;
 const WELCOME_TYPEWRITER_MS = 25;
 const MAX_HISTORY = 100;
+const MAX_TERMINAL_LINES = 220;
+const SCROLL_THROTTLE_MS = 80;
 const QUICK_COMMANDS = ["help", "whoami", "projects", "neofetch", "sudo hire ashish"];
 
 interface TerminalAppProps {
@@ -383,32 +385,49 @@ function AnimatedLine({
 }: AnimatedLineProps): JSX.Element {
   const [visibleLength, setVisibleLength] = useState(0);
   const completedRef = useRef(false);
+  const lastScrollAtRef = useRef(0);
   const text = useMemo(() => getLineText(line), [line]);
 
   useEffect(() => {
     completedRef.current = false;
+    lastScrollAtRef.current = 0;
     setVisibleLength(0);
 
-    const interval = window.setInterval(() => {
-      setVisibleLength((current) => {
-        const next = Math.min(text.length, current + 1);
+    if (text.length === 0) {
+      completedRef.current = true;
+      onComplete();
+      return undefined;
+    }
 
-        if (next >= text.length) {
-          window.clearInterval(interval);
+    const startedAt = performance.now();
+    let frameId = 0;
 
-          if (!completedRef.current) {
-            completedRef.current = true;
-            onComplete();
-          }
+    const animate = (now: number) => {
+      const elapsed = now - startedAt;
+      const nextLength = Math.min(text.length, Math.max(1, Math.floor(elapsed / line.speed)));
+
+      setVisibleLength((current) => (nextLength > current ? nextLength : current));
+
+      if (now - lastScrollAtRef.current > SCROLL_THROTTLE_MS || nextLength >= text.length) {
+        lastScrollAtRef.current = now;
+        onTick();
+      }
+
+      if (nextLength >= text.length) {
+        if (!completedRef.current) {
+          completedRef.current = true;
+          onComplete();
         }
+        return;
+      }
 
-        return next;
-      });
-      onTick();
-    }, line.speed);
+      frameId = window.requestAnimationFrame(animate);
+    };
+
+    frameId = window.requestAnimationFrame(animate);
 
     return () => {
-      window.clearInterval(interval);
+      window.cancelAnimationFrame(frameId);
     };
   }, [line.id, line.speed, onComplete, onTick, text.length]);
 
@@ -472,7 +491,7 @@ export default function TerminalApp({ showcase = false }: TerminalAppProps): JSX
   }, []);
 
   const appendLines = useCallback((nextLines: TerminalLine[]) => {
-    setLines((current) => [...current, ...nextLines]);
+    setLines((current) => [...current, ...nextLines].slice(-MAX_TERMINAL_LINES));
   }, []);
 
   const clearTerminal = useCallback(() => {
