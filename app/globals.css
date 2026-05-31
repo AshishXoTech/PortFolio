@@ -607,6 +607,237 @@ body {
   animation: login-ring-spin 8s linear infinite;
 }
 
+.login-orb {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+}
+
+.login-orb-1 {
+  left: -200px;
+  top: -200px;
+  height: 700px;
+  width: 700px;
+  background: rgba(0, 255, 65, 0.025);
+  filter: blur(160px);
+  animation: login-drift-1 30s ease-in-out infinite;
+}
+
+.login-orb-2 {
+  right: -200px;
+  top: 30%;
+  height: 600px;
+  width: 600px;
+  background: rgba(124, 58, 237, 0.035);
+  filter: blur(140px);
+  animation: login-drift-2 25s ease-in-out infinite alternate;
+}
+
+.login-orb-3 {
+  bottom: -100px;
+  left: 20%;
+  height: 500px;
+  width: 500px;
+  background: rgba(0, 191, 255, 0.02);
+  filter: blur(120px);
+  animation: login-drift-1 35s 5s ease-in-out infinite;
+}
+
+.login-orb-4 {
+  right: 30%;
+  top: 10%;
+  height: 400px;
+  width: 400px;
+  background: rgba(245, 158, 11, 0.015);
+  filter: blur(100px);
+}
+
+.login-orb-5 {
+  left: 50%;
+  top: 50%;
+  height: 800px;
+  width: 800px;
+  background: rgba(124, 58, 237, 0.02);
+  filter: blur(180px);
+  transform: translate(-50%, -50%);
+}
+
+.login-grid-texture {
+  background-image: radial-gradient(rgba(0, 255, 65, 0.018) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 70%);
+}
+
+.login-scanline {
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.025) 3px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+}
+
+.login-avatar-frame {
+  isolation: isolate;
+  box-shadow:
+    0 0 0 2px rgba(5, 5, 16, 0.8),
+    0 0 0 3px rgba(0, 255, 65, 0.16),
+    0 0 26px rgba(124, 58, 237, 0.18);
+}
+
+.login-avatar-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.4), rgba(124, 58, 237, 0.4));
+  pointer-events: none;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+}
+
+.login-avatar-ring-outer,
+.login-avatar-ring-inner,
+.login-avatar-glow {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  border-radius: 9999px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.login-avatar-ring-outer {
+  height: 120px;
+  width: 120px;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.login-avatar-ring-outer span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 4px;
+  width: 4px;
+  border-radius: 9999px;
+  background: #00ff41;
+  box-shadow: 0 0 8px #00ff41;
+  transform: translateX(-50%);
+}
+
+.login-avatar-ring-inner {
+  top: -6px;
+  height: 112px;
+  width: 112px;
+  border: 1px dashed rgba(124, 58, 237, 0.25);
+}
+
+.login-avatar-glow {
+  top: -14px;
+  height: 128px;
+  width: 128px;
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 65, 0.06),
+    0 0 30px rgba(0, 255, 65, 0.08);
+}
+
+.login-avatar-ring-outer.animate {
+  animation: login-orbit-spin 12s linear infinite;
+}
+
+.login-avatar-ring-inner.animate {
+  animation: login-orbit-spin 8s linear infinite reverse;
+}
+
+.login-role {
+  animation: hero-role-glitch 0.42s steps(2, end);
+}
+
+.login-role span {
+  animation: login-cursor-blink 1s steps(2, end) infinite;
+}
+
+.login-auth-divider {
+  position: relative;
+  text-align: center;
+}
+
+.login-auth-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.login-auth-divider span {
+  position: relative;
+  background: rgba(5, 5, 16, 0.75);
+  padding: 0 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #2a2a3a;
+}
+
+@keyframes login-drift-1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(40px, -30px);
+  }
+  50% {
+    transform: translate(-20px, 40px);
+  }
+  75% {
+    transform: translate(30px, 20px);
+  }
+}
+
+@keyframes login-drift-2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-50px, 30px);
+  }
+}
+
+@keyframes login-orbit-spin {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@keyframes login-cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .window-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--muted) transparent;
