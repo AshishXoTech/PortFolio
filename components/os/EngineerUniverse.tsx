@@ -1,6 +1,5 @@
 "use client";
 
-import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
@@ -65,25 +64,6 @@ function useUniverseMotion(rootRef: RefObject<HTMLElement>): void {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      syncTouch: false,
-    });
-
-    let frameId = 0;
-    const raf = (time: number): void => {
-      lenis.raf(time);
-      frameId = window.requestAnimationFrame(raf);
-    };
-
-    const updateScrollTrigger = (): void => {
-      ScrollTrigger.update();
-    };
-
-    lenis.on("scroll", updateScrollTrigger);
-    frameId = window.requestAnimationFrame(raf);
-
     const root = rootRef.current;
     const context = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-universe-scene]").forEach((scene) => {
@@ -125,11 +105,7 @@ function useUniverseMotion(rootRef: RefObject<HTMLElement>): void {
     }, root ?? undefined);
 
     return () => {
-      window.cancelAnimationFrame(frameId);
-      lenis.off("scroll", updateScrollTrigger);
-      lenis.destroy();
       context.revert();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [rootRef]);
 }

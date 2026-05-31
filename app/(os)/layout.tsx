@@ -1,4 +1,5 @@
 import OSProvider from "@/providers/OSProvider";
+import LenisProvider from "@/providers/LenisProvider";
 import { WindowManager } from "@/components/os/WindowManager";
 
 interface OSLayoutProps {
@@ -7,9 +8,11 @@ interface OSLayoutProps {
 
 export default function OSLayout({ children }: OSLayoutProps): JSX.Element {
   return (
-    <OSProvider>
-      {children}
-      <WindowManager />
-    </OSProvider>
+    <LenisProvider>
+      <OSProvider>
+        {children}
+        <WindowManager />
+      </OSProvider>
+    </LenisProvider>
   );
 }
