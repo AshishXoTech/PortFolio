@@ -158,6 +158,55 @@ body {
   transform-origin: left center;
 }
 
+@keyframes day-story-type {
+  from {
+    width: 0;
+  }
+  to {
+    width: 22ch;
+  }
+}
+
+@keyframes day-story-error {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  24%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes day-story-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.day-story-type {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid currentColor;
+  animation:
+    day-story-type 2.3s steps(22, end) infinite alternate,
+    engineer-story-float 3.4s ease-in-out infinite;
+}
+
+.day-story-error {
+  opacity: 0;
+  animation: day-story-error 1.8s ease-out infinite;
+}
+
+.day-story-progress {
+  animation: day-story-progress 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: left center;
+}
+
 .project-showcase-card {
   opacity: 0;
   transform: perspective(1200px) rotateX(22deg) translateY(50px);
