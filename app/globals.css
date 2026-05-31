@@ -69,6 +69,74 @@ body {
   }
 }
 
+@keyframes engineer-story-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes engineer-story-error {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+  }
+  35%,
+  100% {
+    opacity: 0.86;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes engineer-story-particle {
+  0% {
+    opacity: 0.9;
+    transform: rotate(var(--particle-angle, 0deg)) translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--particle-angle, 0deg)) translateX(72px) scale(0);
+  }
+}
+
+@keyframes engineer-story-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.engineer-story-float {
+  animation: engineer-story-float 3s ease-in-out infinite;
+}
+
+.engineer-story-error {
+  animation: engineer-story-error 1.4s ease-out infinite;
+}
+
+.engineer-story-particle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 4px;
+  width: 4px;
+  border-radius: 9999px;
+  background: #00ff41;
+  box-shadow: 0 0 16px rgba(0, 255, 65, 0.9);
+  animation: engineer-story-particle 1.8s ease-out infinite;
+  transform-origin: 0 0;
+}
+
+.engineer-story-progress {
+  animation: engineer-story-progress 1.2s ease-out both;
+  transform-origin: left center;
+}
+
 @keyframes scan {
   0% {
     top: 0;

@@ -4,7 +4,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
 import {
-  Bug,
   Code2,
   Cpu,
   FileJson2,
@@ -22,6 +21,7 @@ import type { RefObject } from "react";
 import { achievements } from "@/lib/data/achievements";
 import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
+import { EngineerStory } from "@/components/sections/EngineerStory";
 import type { AppId } from "@/types/os";
 
 interface EngineerUniverseProps {
@@ -34,24 +34,6 @@ interface StatItem {
   value: string;
   icon: LucideIcon;
 }
-
-const STORY_BEATS = [
-  {
-    icon: Bug,
-    title: "Bugs became training data",
-    body: "Ashish learned by shipping MERN apps, debugging auth flows, and turning broken builds into cleaner systems.",
-  },
-  {
-    icon: Trophy,
-    title: "Hackathons became pressure tests",
-    body: "Three internal wins across 100+ teams, two national finalist runs, and one international finalist result shaped a builder who can move fast with a team.",
-  },
-  {
-    icon: Rocket,
-    title: "Mission: Software Engineer",
-    body: "The current loop is Java, DSA, and system design while building production-grade full-stack projects.",
-  },
-] as const;
 
 const STATS: StatItem[] = [
   { label: "Internal wins", value: "3x", icon: Medal },
@@ -246,22 +228,7 @@ export function EngineerUniverse({
         </div>
       </section>
 
-      <section data-universe-scene className="min-h-screen py-20">
-        <SceneLabel
-          kicker="Scene 03 / Story"
-          title="From debugging loops to winner rooms."
-          body="Ashish's portfolio is framed like engineering telemetry: failures, fixes, wins, and the current mission all visible in one scroll."
-        />
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {STORY_BEATS.map((beat) => (
-            <article key={beat.title} className="glass-panel rounded-lg p-5">
-              <beat.icon className="h-7 w-7 text-green" aria-hidden="true" />
-              <h3 className="mt-5 font-display text-2xl font-bold text-text">{beat.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-text/65">{beat.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <EngineerStory />
 
       <section data-universe-scene className="min-h-screen py-20">
         <SceneLabel
