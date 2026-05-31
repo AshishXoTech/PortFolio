@@ -459,6 +459,61 @@ body {
   box-shadow: 0 0 18px currentColor !important;
 }
 
+.achievements-hall {
+  background: radial-gradient(
+    ellipse 60% 40% at 50% 30%,
+    rgba(245, 158, 11, 0.04) 0%,
+    transparent 70%
+  );
+}
+
+.achievement-star {
+  position: absolute;
+  height: 2px;
+  width: 2px;
+  border-radius: 9999px;
+  animation: achievement-twinkle linear infinite;
+}
+
+.achievements-timeline::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #f59e0b, #7c3aed, rgba(124, 58, 237, 0));
+}
+
+.achievement-center-dot {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  z-index: 20;
+  display: flex;
+  height: 24px;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 2px solid var(--achievement-color);
+  background: #050510;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--achievement-color) 15%, transparent),
+    0 0 20px color-mix(in srgb, var(--achievement-color) 25%, transparent);
+  transform: translateX(-50%);
+}
+
+.achievement-center-dot span {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.achievement-counter-pulse {
+  animation: achievement-counter-pulse 0.65s ease-out;
+}
+
 @keyframes skill-shimmer {
   from {
     background-position: -200% 0;
@@ -478,10 +533,34 @@ body {
   }
 }
 
+@keyframes achievement-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes achievement-counter-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 currentColor);
+    transform: scale(1);
+  }
+  45% {
+    filter: drop-shadow(0 0 18px currentColor);
+    transform: scale(1.045);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-code-rain-column,
   .skill-fill-shimmer,
-  .skill-ecosystem-pill {
+  .skill-ecosystem-pill,
+  .achievement-star,
+  .achievement-counter-pulse {
     animation: none;
   }
 }
@@ -580,6 +659,18 @@ body {
 
   .system-ticker-track {
     animation-duration: 30s;
+  }
+
+  .achievements-timeline::before {
+    left: 12px;
+  }
+
+  .achievement-center-dot {
+    left: 12px;
+  }
+
+  .achievements-timeline article {
+    margin-left: 44px;
   }
 }
 

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { achievements } from "@/lib/data/achievements";
+import { AchievementsApp } from "@/components/apps/AchievementsApp";
 import { SkillsApp } from "@/components/apps/SkillsApp";
 import { EngineerStory } from "@/components/sections/EngineerStory";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
@@ -547,26 +547,8 @@ export function EngineerUniverse({
         <SkillsApp />
       </section>
 
-      <section
-        data-universe-scene
-        className="mx-auto min-h-screen w-full max-w-[1200px] px-6 py-20 md:px-12"
-      >
-        <SceneLabel
-          kicker="Scene 06 / Wins"
-          title="Hackathon timeline with signal."
-          body="A record of building quickly, presenting clearly, and reaching competitive rooms beyond campus."
-        />
-        <div className="mt-10 grid gap-4">
-          {achievements.map((achievement) => (
-            <article key={achievement.id} className="glass-panel grid gap-3 rounded-lg p-5 md:grid-cols-[120px_1fr]">
-              <p className="font-mono text-sm text-gold">{achievement.year}</p>
-              <div>
-                <h3 className="font-display text-xl font-bold text-text">{achievement.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-text/65">{achievement.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+      <section data-universe-scene>
+        <AchievementsApp />
       </section>
 
       <section
