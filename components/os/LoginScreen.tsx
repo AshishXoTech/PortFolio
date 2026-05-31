@@ -68,6 +68,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps): JSX.Element 
                 height={96}
                 className="h-24 w-24 rounded-full object-cover"
                 priority
+                unoptimized
               />
             </div>
           </div>

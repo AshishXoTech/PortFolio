@@ -121,6 +121,7 @@ export function AboutApp(): JSX.Element {
                 height={160}
                 className="h-40 w-40 object-cover"
                 priority
+                unoptimized
               />
             </div>
           </div>
