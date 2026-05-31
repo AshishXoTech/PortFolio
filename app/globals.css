@@ -447,8 +447,41 @@ body {
   }
 }
 
+.skill-fill-shimmer {
+  animation: skill-shimmer 2.5s ease infinite;
+}
+
+.skill-ecosystem-pill {
+  animation: skill-pill-float 5s ease-in-out infinite;
+}
+
+.skill-ecosystem-pill:hover {
+  box-shadow: 0 0 18px currentColor !important;
+}
+
+@keyframes skill-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes skill-pill-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .project-code-rain-column {
+  .project-code-rain-column,
+  .skill-fill-shimmer,
+  .skill-ecosystem-pill {
     animation: none;
   }
 }

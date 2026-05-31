@@ -9,10 +9,10 @@ import {
   ServerCog,
   Terminal,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { achievements } from "@/lib/data/achievements";
-import { skills } from "@/lib/data/skills";
+import { SkillsApp } from "@/components/apps/SkillsApp";
 import { EngineerStory } from "@/components/sections/EngineerStory";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 import HeroScene from "@/components/three/HeroScene";
@@ -358,11 +358,6 @@ export function EngineerUniverse({
   const overviewEntered = useSectionEntered(overviewRef);
   useUniverseMotion(rootRef);
 
-  const topSkills = useMemo(
-    () => skills.filter((skill) => skill.category !== "Learning").slice(0, 10),
-    []
-  );
-
   return (
     <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden pb-28">
       <AtmosphereLayers />
@@ -548,28 +543,8 @@ export function EngineerUniverse({
 
       <ProjectShowcase />
 
-      <section
-        data-universe-scene
-        className="mx-auto grid min-h-screen w-full max-w-[1200px] items-center gap-8 px-6 py-20 md:grid-cols-[0.85fr_1.15fr] md:px-12"
-      >
-        <SceneLabel
-          kicker="Scene 05 / Skills"
-          title="System monitor for the stack."
-          body="The bars track the technologies Ashish is already using in projects, with Java and DSA actively compiling in the learning lane."
-        />
-        <div className="glass-panel rounded-lg p-5">
-          {topSkills.map((skill) => (
-            <div key={skill.id} className="mb-4 last:mb-0">
-              <div className="mb-2 flex items-center justify-between font-mono text-xs">
-                <span className="text-text/78">{skill.name}</span>
-                <span className="text-green">{skill.proficiency}%</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded bg-white/[0.05]">
-                <div className="h-full rounded bg-green" style={{ width: `${skill.proficiency}%` }} />
-              </div>
-            </div>
-          ))}
-        </div>
+      <section data-universe-scene>
+        <SkillsApp />
       </section>
 
       <section
