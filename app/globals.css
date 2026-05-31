@@ -46,6 +46,141 @@ body {
   background-size: 22px 22px;
 }
 
+.atmosphere-orb {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+.atmosphere-orb-green {
+  left: -200px;
+  top: -200px;
+  height: 800px;
+  width: 800px;
+  background: rgba(0, 255, 65, 0.018);
+  filter: blur(160px);
+  animation: drift 30s ease-in-out infinite;
+}
+
+.atmosphere-orb-purple {
+  right: -300px;
+  top: 40%;
+  height: 700px;
+  width: 700px;
+  background: rgba(124, 58, 237, 0.022);
+  filter: blur(140px);
+  animation: drift 25s 5s ease-in-out infinite alternate;
+}
+
+.atmosphere-orb-blue {
+  bottom: -100px;
+  left: 30%;
+  height: 600px;
+  width: 600px;
+  background: rgba(0, 191, 255, 0.015);
+  filter: blur(120px);
+  animation: drift 35s 10s ease-in-out infinite;
+}
+
+.hero-grid-texture {
+  background-image: radial-gradient(rgba(0, 255, 65, 0.022) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 80%);
+}
+
+.hero-frame::before,
+.hero-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  height: 20px;
+  width: 20px;
+  pointer-events: none;
+}
+
+.hero-frame::before {
+  left: 14px;
+  top: 14px;
+  border-left: 2px solid rgba(0, 255, 65, 0.4);
+  border-top: 2px solid rgba(0, 255, 65, 0.4);
+}
+
+.hero-frame::after {
+  bottom: 14px;
+  right: 14px;
+  border-bottom: 2px solid rgba(124, 58, 237, 0.4);
+  border-right: 2px solid rgba(124, 58, 237, 0.4);
+}
+
+.hero-role-glitch {
+  animation: hero-role-glitch 0.42s steps(2, end);
+}
+
+.hero-scroll-indicator {
+  animation: hero-float 2s ease-in-out infinite;
+}
+
+.system-ticker-track {
+  animation: ticker 20s linear infinite;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(40px, -30px);
+  }
+  50% {
+    transform: translate(-20px, 40px);
+  }
+  75% {
+    transform: translate(30px, 20px);
+  }
+}
+
+@keyframes hero-role-glitch {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    text-shadow: none;
+  }
+  22% {
+    opacity: 0.65;
+    transform: translateX(-1px);
+    text-shadow: 2px 0 rgba(0, 255, 65, 0.4);
+  }
+  48% {
+    opacity: 0.9;
+    transform: translateX(1px);
+    text-shadow: -2px 0 rgba(255, 0, 60, 0.35);
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -8px);
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .glass-panel {
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
@@ -357,6 +492,10 @@ body {
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
+  }
+
+  .system-ticker-track {
+    animation-duration: 30s;
   }
 }
 
