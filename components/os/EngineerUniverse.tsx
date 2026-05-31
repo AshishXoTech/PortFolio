@@ -22,6 +22,7 @@ import { achievements } from "@/lib/data/achievements";
 import { skills } from "@/lib/data/skills";
 import { EngineerStory } from "@/components/sections/EngineerStory";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
+import HeroScene from "@/components/three/HeroScene";
 import type { AppId } from "@/types/os";
 
 interface EngineerUniverseProps {
@@ -36,9 +37,9 @@ interface StatItem {
 }
 
 const STATS: StatItem[] = [
-  { label: "Internal wins", value: "3x", icon: Medal },
-  { label: "National finalist", value: "2x", icon: Trophy },
-  { label: "International finalist", value: "1x", icon: Rocket },
+  { label: "Hackathon", value: "3x", icon: Medal },
+  { label: "National", value: "2x", icon: Trophy },
+  { label: "Intl", value: "1x", icon: Rocket },
   { label: "CGPA", value: "8.0", icon: Cpu },
 ];
 
@@ -139,15 +140,32 @@ export function EngineerUniverse({
   );
 
   return (
-    <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden px-4 pb-28 pt-8 md:px-8">
+    <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden px-4 pb-28 md:px-8">
       <AtmosphereLayers />
 
-      <section data-universe-scene className="relative flex min-h-[92vh] items-center">
-        <div className="max-w-5xl">
+      <section
+        data-universe-scene
+        className="relative min-h-screen overflow-hidden pt-[120px] md:pt-[120px]"
+      >
+        <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-0 md:grid-cols-2 md:px-12">
+          <div className="min-w-0 md:pr-12">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-green/20 bg-green/[0.04] px-4 py-1.5 font-mono text-[10px] text-green"
+            >
+              <span
+                className="h-2 w-2 animate-pulse rounded-full bg-green shadow-[0_0_10px_rgba(0,255,65,0.8)]"
+                aria-hidden="true"
+              />
+              Available for opportunities
+            </motion.div>
+
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-mono text-xs uppercase tracking-[0.32em] text-green"
+            transition={{ delay: 0.05 }}
+            className="mb-3 font-mono text-xs uppercase tracking-[0.32em] text-green"
           >
             AshishOS / Engineer&apos;s Universe
           </motion.p>
@@ -155,27 +173,72 @@ export function EngineerUniverse({
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mt-5 max-w-4xl text-balance font-display text-5xl font-bold leading-[1.02] text-text md:text-8xl"
+            className="mb-4 max-w-[620px] font-display text-[clamp(40px,5.5vw,72px)] font-black leading-none tracking-[-0.03em] text-[#e8e8f0]"
           >
-            Ashish Kumar Jha builds full-stack systems under pressure.
+            Ashish Kumar Jha
           </motion.h1>
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mb-6 font-display text-[clamp(18px,2.5vw,32px)] font-bold text-[rgba(232,232,240,0.5)]"
+          >
+            Full-stack systems under pressure.
+          </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-6 max-w-2xl text-lg leading-8 text-text/72"
+            className="mb-10 max-w-[480px] font-sans text-[15px] leading-[1.8] text-[#6a6a8a]"
           >
             I build full-stack products with Next.js, TypeScript, Node.js,
             FastAPI, PostgreSQL, Redis, Docker, Prisma, JWT, and OpenAI API.
             Right now I am sharpening Java, DSA, and system design for a serious
             Software Engineer role.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="mb-10 flex flex-wrap gap-y-4"
+          >
+            {STATS.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={[
+                  "pr-6",
+                  index > 0
+                    ? "border-l border-[rgba(255,255,255,0.05)] pl-6"
+                    : "",
+                ].join(" ")}
+              >
+                <p
+                  className="font-display text-[28px] font-bold leading-none"
+                  style={{
+                    color:
+                      index === 0
+                        ? "#00ff41"
+                        : index === 1
+                          ? "#7c3aed"
+                          : index === 2
+                            ? "#ff003c"
+                            : "#f59e0b",
+                  }}
+                >
+                  {stat.value}
+                </p>
+                <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.08em] text-[#444]">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
           {windowActionsEnabled ? (
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={() => onOpenApp("projects")}
-                className="inline-flex items-center gap-2 rounded-md bg-green px-5 py-3 font-display text-sm font-bold text-background transition hover:brightness-110"
+                className="inline-flex items-center gap-2 rounded-lg bg-green px-7 py-3 font-mono text-xs font-bold text-background transition hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(0,255,65,0.3)]"
               >
                 <Code2 className="h-4 w-4" aria-hidden="true" />
                 Open projects
@@ -183,30 +246,40 @@ export function EngineerUniverse({
               <button
                 type="button"
                 onClick={() => onOpenApp("terminal")}
-                className="glass-panel inline-flex items-center gap-2 rounded-md px-5 py-3 font-display text-sm font-bold text-text transition hover:border-green/40"
+                className="inline-flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.12)] bg-transparent px-7 py-3 font-mono text-xs font-bold text-[#888] transition hover:border-[rgba(255,255,255,0.3)] hover:text-[#e0e0e0]"
               >
-                <Terminal className="h-4 w-4 text-green" aria-hidden="true" />
+                <Terminal className="h-4 w-4" aria-hidden="true" />
                 Launch terminal
               </button>
             </div>
           ) : (
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 rounded-md bg-green px-5 py-3 font-display text-sm font-bold text-background transition hover:brightness-110"
+                className="inline-flex items-center gap-2 rounded-lg bg-green px-7 py-3 font-mono text-xs font-bold text-background transition hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(0,255,65,0.3)]"
               >
                 <Code2 className="h-4 w-4" aria-hidden="true" />
                 View projects
               </a>
               <a
                 href="#terminal"
-                className="glass-panel inline-flex items-center gap-2 rounded-md px-5 py-3 font-display text-sm font-bold text-text transition hover:border-green/40"
+                className="inline-flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.12)] bg-transparent px-7 py-3 font-mono text-xs font-bold text-[#888] transition hover:border-[rgba(255,255,255,0.3)] hover:text-[#e0e0e0]"
               >
-                <Terminal className="h-4 w-4 text-green" aria-hidden="true" />
+                <Terminal className="h-4 w-4" aria-hidden="true" />
                 View terminal
               </a>
             </div>
           )}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.24, duration: 0.6 }}
+            className="relative hidden h-[600px] overflow-hidden rounded-[24px] border border-[rgba(255,255,255,0.04)] bg-[rgba(8,8,20,0.35)] md:block"
+          >
+            <HeroScene />
+          </motion.div>
         </div>
       </section>
 

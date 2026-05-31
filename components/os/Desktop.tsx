@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   BookOpen,
@@ -11,12 +10,9 @@ import {
   User,
   Wrench,
 } from "lucide-react";
-import { AppIcon } from "@/components/os/AppIcon";
 import { EngineerUniverse } from "@/components/os/EngineerUniverse";
 import { Taskbar } from "@/components/os/Taskbar";
 import { WindowManager } from "@/components/os/WindowManager";
-import HeroScene from "@/components/three/HeroScene";
-import { BokehOrbs } from "@/components/ui/BokehOrbs";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useOS } from "@/hooks/useOS";
 import type { AppId } from "@/types/os";
@@ -37,57 +33,11 @@ const DESKTOP_APPS: DesktopApp[] = [
   { id: "contact", label: "Contact", icon: Mail },
 ];
 
-interface HeroPointerOffset {
-  x: number;
-  y: number;
-}
-
 export function Desktop(): JSX.Element {
   const isMobile = useIsMobile();
-  const { openApp } = useOS();
-  const frameRef = useRef(0);
-  const pointerRef = useRef<HeroPointerOffset>({ x: 0, y: 0 });
-  const [bokehOffset, setBokehOffset] = useState<HeroPointerOffset>({
-    x: 0,
-    y: 0,
-  });
-
-  useEffect(() => {
-    if (isMobile) {
-      setBokehOffset({ x: 0, y: 0 });
-      return undefined;
-    }
-
-    const updateOffset = (): void => {
-      frameRef.current = 0;
-      setBokehOffset({
-        x: pointerRef.current.x * 12,
-        y: pointerRef.current.y * 8,
-      });
-    };
-
-    const handleMouseMove = (event: MouseEvent): void => {
-      pointerRef.current = {
-        x: (event.clientX / window.innerWidth) * 2 - 1,
-        y: (event.clientY / window.innerHeight) * 2 - 1,
-      };
-
-      if (frameRef.current === 0) {
-        frameRef.current = window.requestAnimationFrame(updateOffset);
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-
-      if (frameRef.current !== 0) {
-        window.cancelAnimationFrame(frameRef.current);
-        frameRef.current = 0;
-      }
-    };
-  }, [isMobile]);
+  const { activeWindowId, openApp, windows } = useOS();
+  const activeAppId =
+    windows.find((window) => window.id === activeWindowId)?.appId ?? null;
 
   if (isMobile) {
     return (
@@ -115,21 +65,26 @@ export function Desktop(): JSX.Element {
 
   return (
     <div className="relative min-h-screen bg-background">
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <BokehOrbs offsetX={bokehOffset.x} offsetY={bokehOffset.y} />
-        <HeroScene />
-      </div>
-
-      <div className="fixed left-4 top-4 z-30 grid grid-cols-1 gap-3">
+      <nav
+        className="fixed left-1/2 top-5 z-40 flex max-w-[calc(100vw-24px)] -translate-x-1/2 gap-1 overflow-x-auto rounded-full border border-[rgba(255,255,255,0.06)] bg-[rgba(5,5,16,0.8)] px-2 py-1.5 backdrop-blur-[20px]"
+        aria-label="AshishOS apps"
+      >
         {DESKTOP_APPS.map((app) => (
-          <AppIcon
+          <button
             key={app.id}
-            appId={app.id}
-            label={app.label}
-            icon={app.icon}
-          />
+            type="button"
+            onClick={() => openApp(app.id)}
+            className={[
+              "shrink-0 rounded-full px-4 py-[7px] font-mono text-[11px] transition-colors",
+              activeAppId === app.id
+                ? "bg-green/10 text-green"
+                : "text-[#555] hover:text-[#999]",
+            ].join(" ")}
+          >
+            {app.label}
+          </button>
         ))}
-      </div>
+      </nav>
 
       <EngineerUniverse onOpenApp={openApp} />
       <Taskbar />
