@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Technical articles on full-stack development, system design, Docker, AI integrations, backend architecture, and engineering lessons.",
+    "Technical notes from Ashish Kumar Jha on Next.js, Express RBAC, AI systems, hackathons, and early developer lessons.",
 };
 
 export default function BlogPage(): JSX.Element {

@@ -165,9 +165,10 @@ export function EngineerUniverse({
             transition={{ delay: 0.2 }}
             className="mt-6 max-w-2xl text-lg leading-8 text-text/72"
           >
-            Full Stack Developer from University of Engineering & Management,
-            Jaipur. MERN, Next.js 14, TypeScript, Docker, FastAPI, PostgreSQL,
-            Redis, OpenAI API, and Prisma ORM.
+            I build full-stack products with Next.js, TypeScript, Node.js,
+            FastAPI, PostgreSQL, Redis, Docker, Prisma, JWT, and OpenAI API.
+            Right now I am sharpening Java, DSA, and system design for a serious
+            Software Engineer role.
           </motion.p>
           {windowActionsEnabled ? (
             <div className="mt-8 flex flex-wrap gap-3">

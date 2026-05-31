@@ -1,72 +1,30 @@
 ---
-title: "How I Implemented RBAC in Express.js from Scratch"
-description: "A practical walkthrough of building role-based access control in Express.js with JWT authentication, middleware patterns, and MongoDB for the Rakshak Fraud Platform."
+title: "RBAC from Scratch in Express.js — No Library Needed"
+description: "I built RBAC by hand because I wanted to understand the permission model, not just install one."
 date: 2025-01-20
 tags: ["Express.js", "RBAC", "JWT", "Security", "Node.js"]
 ---
 
-Role-Based Access Control (RBAC) is essential for any multi-user application. When building Rakshak Fraud Platform, we needed granular permissions for admins, analysts, and auditors — each with different access levels to fraud analysis data.
+I built RBAC by hand because I wanted to understand the permission model, not just install one.
 
-## Why Build It from Scratch?
+## What RBAC actually means in a real Express API
 
-Libraries exist for RBAC, but implementing it manually taught me how authorization actually works at the middleware level. Understanding the internals made debugging permission issues significantly easier and gave full control over the authorization flow.
+RBAC is not a badge on a dashboard. It is every route deciding who can touch which action, and it gets messy when the product grows past one user type.
 
-## RBAC Fundamentals
+## Designing user, analyst, and admin roles
 
-RBAC assigns permissions to roles, and roles to users. Instead of checking individual permissions per user, you check the user's role:
+Rakshak needed a simple 3-tier model: users submit complaints, analysts review and score them, and admins manage the system. That model was small enough to reason about and strict enough to protect the workflow.
 
-- **Admin** — Full system access, user management, system configuration
-- **Analyst** — View and flag transactions, run fraud reports, trigger AI analysis
-- **Auditor** — Read-only access to audit logs and reports
+## JWT payloads, middleware, and route protection
 
-## Implementation with Express.js
+I stored the role in the JWT payload, verified it in auth middleware, and added role checks at the route level. The important part was making the protected paths obvious in code.
 
-### 1. JWT Payload Design
+## Avoiding common authorization mistakes
 
-Embed the user's role in the JWT payload:
+The easy mistake is checking authentication and forgetting authorization. Another one is hiding buttons in the UI but leaving the API route open.
 
-```javascript
-const token = jwt.sign(
-  { userId: user._id, role: user.role },
-  process.env.JWT_SECRET,
-  { expiresIn: "24h" }
-);
-```
+## Testing permissions before trusting them
 
-### 2. Authorization Middleware
+I tested routes by role, not just by happy path. Admin actions had to reject analyst tokens, and analyst actions had to reject normal user tokens.
 
-Create reusable middleware that checks roles:
-
-```javascript
-const authorize = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    return res.status(403).json({ error: "Forbidden" });
-  }
-  next();
-};
-```
-
-### 3. Route Protection
-
-Apply middleware to protected routes:
-
-```javascript
-router.get("/transactions", authenticate, authorize("admin", "analyst"), getTransactions);
-router.delete("/users/:id", authenticate, authorize("admin"), deleteUser);
-```
-
-## MongoDB Schema Design
-
-Store roles as an enum on the User model with a separate Permissions collection for fine-grained control when needed. The three-tier model keeps the schema simple while supporting future permission expansion.
-
-## Security Best Practices
-
-- Always validate JWT on every protected route
-- Use short token expiry with refresh tokens
-- Log all authorization failures for audit trails
-- Never expose role information in public API responses
-- Implement rate limiting on authentication endpoints
-
-## Outcome
-
-This RBAC implementation secured Rakshak's fraud detection pipeline, ensuring analysts could flag suspicious transactions and trigger AI-powered fraud scoring without accessing admin-level system configuration. The pattern is now reusable across all our Node.js projects.
+Before adding an auth library, build the small version once so the abstractions make sense.

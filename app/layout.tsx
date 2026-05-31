@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Ashish Kumar Jha",
   },
   description:
-    "Ashish Kumar Jha — Full Stack Developer building scalable web applications with Next.js, TypeScript, FastAPI, PostgreSQL, Docker, and AI.",
+    "Ashish Kumar Jha is a full-stack developer building Next.js, TypeScript, FastAPI, Docker, PostgreSQL, Redis, and AI systems.",
   keywords: [
     "Ashish Kumar Jha",
     "Full Stack Developer",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ashish Kumar Jha — Full Stack Developer",
     description:
-      "Ashish Kumar Jha — Full Stack Developer building scalable web applications with Next.js, TypeScript, FastAPI, PostgreSQL, Docker, and AI.",
+      "Ashish Kumar Jha is a full-stack developer building Next.js, TypeScript, FastAPI, Docker, PostgreSQL, Redis, and AI systems.",
     type: "website",
     locale: "en_US",
   },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ashish Kumar Jha — Full Stack Developer",
     description:
-      "Ashish Kumar Jha — Full Stack Developer building scalable web applications with Next.js, TypeScript, FastAPI, PostgreSQL, Docker, and AI.",
+      "Ashish Kumar Jha is a full-stack developer building Next.js, TypeScript, FastAPI, Docker, PostgreSQL, Redis, and AI systems.",
   },
   robots: {
     index: true,

@@ -166,6 +166,16 @@ function getWelcomeLines(): TerminalLine[] {
       WELCOME_TYPEWRITER_MS
     ),
     createLine(
+      "Full-stack systems, AI pipelines, and product-grade interfaces.",
+      "success",
+      WELCOME_TYPEWRITER_MS
+    ),
+    createLine(
+      "Currently compiling Java, DSA, and the discipline to ship better software.",
+      "default",
+      WELCOME_TYPEWRITER_MS
+    ),
+    createLine(
       "Type help for available commands.",
       "default",
       WELCOME_TYPEWRITER_MS
@@ -196,9 +206,18 @@ function getWhoamiLines(): TerminalLine[] {
   return [
     "Name:    Ashish Kumar Jha",
     "Role:    Full Stack Developer",
-    "College: UEM Jaipur, B.Tech CSE 2024-28",
+    "College: University of Engineering & Management, Jaipur",
+    "Degree:  B.Tech CSE, 2024-2028",
     "CGPA:    8.0 / 10.0",
-    "Stack:   MERN, Next.js, TypeScript, Docker, FastAPI",
+    "",
+    "Stack:   MERN, Next.js 14, TypeScript, Docker, FastAPI",
+    "         PostgreSQL, Redis, OpenAI API, Prisma ORM, JWT",
+    "",
+    "Wins:    3x Internal Hackathon Winner",
+    "         2x National Hackathon Finalist",
+    "         1x International Hackathon Finalist",
+    "",
+    "Now:     Learning Java, DSA, and System Design for SWE roles",
     "Status:  Open to opportunities",
   ].map((line) => createLine(line));
 }
@@ -280,13 +299,19 @@ function getNeofetchLines(): TerminalLine[] {
     "Kernel:  Next.js 14 LTS",
     "CPU:     Brain at 3.6GHz, chai-cooled",
     "Memory:  8.0 GPA out of 10.0",
+    "Stack:   MERN, TypeScript, FastAPI, PostgreSQL",
+    "Services: Redis, Docker, Prisma, JWT, OpenAI API",
+    "Projects: HackFlow AI, Rakshak, AI Credit Advisor",
     "Hacks:   3 Wins, 2 National, 1 International",
-    "Status:  Open to opportunities",
+    "Now:     Java + DSA + System Design",
+    "Status:  Open to Software Engineer opportunities",
   ];
 
-  return logo.map((logoLine, index) =>
+  const maxRows = Math.max(logo.length, info.length);
+
+  return Array.from({ length: maxRows }, (_, index) =>
     createSegmentLine([
-      { text: pad(logoLine, 25), tone: "success" },
+      { text: pad(logo[index] ?? "", 25), tone: "success" },
       { text: info[index] ?? "", tone: "default" },
     ])
   );
@@ -294,12 +319,12 @@ function getNeofetchLines(): TerminalLine[] {
 
 function getGitLogLines(): TerminalLine[] {
   return [
-    "a3f2b1c  feat: add 3D code universe hero scene",
-    "7d8e9f0  feat: implement terminal easter eggs",
-    "2c4a6b8  fix: bug that only appeared at 3am",
-    "9e1c3d5  feat: add HackFlow AI project card",
-    "4b7d2f1  fix: hydration error after googling for 2 hours",
-    "1c8e9a3  chore: drink chai, survive, refactor",
+    "a3f2b1c  feat: ship HackFlow AI before the deadline remembered me",
+    "7d8e9f0  feat: add RBAC without pretending auth is easy",
+    "2c4a6b8  fix: undefined bug found at 3:07am",
+    "9e1c3d5  feat: connect OpenAI scoring to real product flows",
+    "4b7d2f1  fix: Docker worked locally after only mild emotional damage",
+    "1c8e9a3  chore: start Java DSA grind, no shortcuts",
   ].map((line) => createLine(line));
 }
 
@@ -311,7 +336,13 @@ function getSudoHireLines(): TerminalLine[] {
     "[████████  ] 80%",
     "[██████████] 100%",
     "ACCESS GRANTED",
-    "Level: SENIOR_ENGINEER",
+    "",
+    "Level: SOFTWARE_ENGINEER_CANDIDATE",
+    "Reason: Ships full-stack systems, understands pressure, still learning fundamentals.",
+    "Evidence: 3 hackathon wins, 2 national finals, 1 international final.",
+    "Stack: Next.js, TypeScript, Node.js, FastAPI, PostgreSQL, Redis, Docker, OpenAI API.",
+    "Current mission: Java, DSA, System Design.",
+    "",
     "You made an excellent decision.",
     "Contact: ashish863863@gmail.com",
   ].map((line) =>
@@ -328,10 +359,12 @@ function getRmRfLines(): TerminalLine[] {
   return [
     "Removing ./src... permission denied",
     "Removing ./components... permission denied",
+    "Removing ./projects... permission denied",
     "Removing node_modules... this could take a while",
     "...",
     "ERROR: Cannot delete greatness.",
     "AshishOS protection mode is active.",
+    "Try shipping another feature instead.",
   ].map((line) =>
     createLine(line, line.startsWith("ERROR") ? "error" : "default")
   );

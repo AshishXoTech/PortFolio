@@ -1,38 +1,30 @@
 ---
-title: "Building HackFlow AI — Microservices + AI in 48 Hours"
-description: "How we architected a developer evaluation platform using Next.js, FastAPI, PostgreSQL, and AI-powered repository analysis in a 48-hour hackathon sprint."
+title: "How I Built HackFlow AI in 48 Hours"
+description: "HackFlow AI started as a deadline problem: judging projects manually was too slow, so I built an AI evaluation pipeline."
 date: 2025-03-15
-tags: ["Next.js", "FastAPI", "PostgreSQL", "Microservices", "AI"]
+tags: ["Next.js", "FastAPI", "PostgreSQL", "AI", "Hackathons"]
 ---
 
-Building HackFlow AI started with a problem every hackathon organizer faces: evaluating dozens of project submissions manually is slow, inconsistent, and painful. We wanted to automate the evaluation pipeline without losing the nuance of human judgment.
+HackFlow AI started as a deadline problem: judging projects manually was too slow, so I built an AI evaluation pipeline.
 
-## The Problem
+## The problem: hackathon judging does not scale
 
-Hackathon judges spend hours reviewing codebases, often skimming through repositories without understanding the actual engineering effort involved. We needed a system that could analyze GitHub repositories automatically and surface meaningful project insights.
+Manual judging breaks when dozens of teams submit repositories at once. Judges need signal fast: what was built, how much engineering exists, and whether the project works beyond the demo pitch.
 
-## Architecture
+## Designing the split: Node.js API + FastAPI ML pipeline
 
-We chose a microservice architecture to separate concerns:
+I separated product workflows from AI work. The Node.js REST API handled users, roles, submissions, and leaderboards, while the Python FastAPI service focused on repository analysis.
 
-- **Next.js 14** for the frontend with App Router and server components
-- **Node.js + Prisma** for the main API layer with PostgreSQL
-- **FastAPI** microservice for AI-powered repository analysis
-- **JWT authentication** with role-based access for organizers and participants
+## Evaluating GitHub repositories with NLP
 
-The two backend services communicate through REST APIs. The FastAPI service handles the computationally intensive repository analysis while the Node.js service manages user authentication, leaderboards, and data persistence.
+The pipeline read GitHub project data and generated evaluation signals using NLP. The goal was not to replace judges, but to reduce the boring manual scan before the actual decision.
 
-## Key Features
+## Building RBAC for organizers, judges, and participants
 
-1. Automated GitHub repository analysis using AI
-2. Real-time leaderboards with transparent scoring metrics
-3. JWT-based authentication with role separation
-4. Automated ranking that reduces manual review effort
+Organizers needed control, judges needed review access, and participants needed submission flows. JWT-based role checks kept those paths separate without overbuilding the first version.
 
-## 48-Hour Sprint Lessons
+## What broke, what shipped, and what I would rebuild
 
-Building under time pressure forces architectural clarity. We spent the first 4 hours designing the database schema and API contracts before writing any feature code. That upfront investment prevented integration issues when connecting the two backend services.
+The hardest part was keeping two services aligned under hackathon pressure. If I rebuilt it, I would spend more time on background jobs, retries, and better scoring transparency.
 
-The most important lesson: microservices add complexity, but when each service has a clear boundary, parallel development becomes significantly faster. Two people can work on separate services without merge conflicts.
-
-HackFlow AI won our university internal hackathon and demonstrated that AI-assisted evaluation can meaningfully reduce manual review overhead.
+If you are building hackathon tools or AI evaluation systems, study the workflow before touching the model.

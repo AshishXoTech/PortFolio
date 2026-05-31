@@ -19,26 +19,26 @@ const STORY_BEATS: StoryBeat[] = [
   {
     id: "beginning",
     eyebrow: "01 / The Beginning",
-    title: "Every great engineer",
-    subtitle: "starts with a blank file.",
+    title: "Before the first line",
+    subtitle: "Empty file. Full doubt. Cursor waiting.",
   },
   {
     id: "bugs",
     eyebrow: "02 / The Bugs",
-    title: "Then come the bugs.",
-    subtitle: "3am. Stack overflow. No idea why it works.",
+    title: "Bugs arrive at 3am",
+    subtitle: "Stack traces, silence, one tiny undefined.",
   },
   {
     id: "breakthrough",
     eyebrow: "03 / The Breakthrough",
-    title: "Until it does.",
-    subtitle: "HackFlow AI. Rakshak. Real products. Real users.",
+    title: "Then it ships",
+    subtitle: "HackFlow. Rakshak. Wins became working systems.",
   },
   {
     id: "mission",
     eyebrow: "04 / The Mission",
-    title: "Still learning.",
-    subtitle: "Java. DSA. System Design. The journey continues.",
+    title: "Back to fundamentals",
+    subtitle: "Java, DSA, system design, SWE next.",
   },
 ];
 

@@ -55,6 +55,37 @@ function SectionHeader({ children }: { children: string }): JSX.Element {
   );
 }
 
+const ABOUT_AS_CODE = `// Name: Ashish Kumar Jha
+// Role: Full Stack Developer
+// Location: Jaipur, Rajasthan, India
+// Education: B.Tech CSE, University of Engineering & Management, Jaipur
+// Batch: 2024-2028
+// CGPA: 8.0 / 10.0
+
+const ashish = {
+  skills: [
+    "MERN",
+    "Next.js 14",
+    "TypeScript",
+    "Node.js",
+    "FastAPI",
+    "PostgreSQL",
+    "Redis",
+    "Docker",
+    "Prisma ORM",
+    "JWT",
+    "OpenAI API",
+  ],
+  currentlyLearning: ["Java", "DSA", "System Design"],
+  goals: [
+    "Get stronger at fundamentals",
+    "Build production-grade full-stack systems",
+    "Earn a Software Engineer role through real work",
+  ],
+  funFact:
+    "Most of my best debugging progress has happened after I admitted I had no idea what was going on.",
+};`;
+
 export function AboutApp(): JSX.Element {
   return (
     <motion.div
@@ -144,41 +175,12 @@ export function AboutApp(): JSX.Element {
         <div className="min-w-0 flex-1">
           <SectionHeader>{"// about me"}</SectionHeader>
 
-          <motion.p
+          <motion.pre
             variants={itemVariants}
-            className="mb-3 font-sans text-sm leading-relaxed text-[#e0e0e0]"
+            className="window-scrollbar mb-6 max-h-[360px] overflow-auto rounded-lg border border-[rgba(255,255,255,0.07)] bg-[#050510] p-4 font-mono text-[11px] leading-6 text-[#e8e8f0]"
           >
-            I&apos;m Ashish Kumar Jha, a B.Tech Computer Science student at the
-            University of Engineering &amp; Management, Jaipur. My primary focus
-            is full-stack web development using the MERN ecosystem, Next.js,
-            TypeScript, FastAPI, PostgreSQL, and modern cloud deployment
-            workflows. Most of my time is split between building products,
-            participating in hackathons, and improving problem-solving skills
-            through DSA.
-          </motion.p>
-
-          <motion.p
-            variants={itemVariants}
-            className="mb-3 font-sans text-sm leading-relaxed text-[#e0e0e0]"
-          >
-            I enjoy building systems that go beyond CRUD applications. My
-            projects usually involve authentication, authorization, AI
-            integrations, microservices, caching, database design, and
-            production deployment concerns. I prefer understanding how systems
-            work internally instead of relying entirely on abstractions.
-          </motion.p>
-
-          <motion.p
-            variants={itemVariants}
-            className="mb-6 font-sans text-sm leading-relaxed text-[#e0e0e0]"
-          >
-            My long-term goal is to become a software engineer focused on
-            building reliable products at scale. Right now I&apos;m investing
-            heavily in Java, Data Structures &amp; Algorithms, and System Design
-            because writing features is only one part of engineering—the
-            other part is designing systems that continue working as complexity
-            grows.
-          </motion.p>
+            <code>{ABOUT_AS_CODE}</code>
+          </motion.pre>
 
           <SectionHeader>{"// education"}</SectionHeader>
 

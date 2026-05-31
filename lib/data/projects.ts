@@ -6,7 +6,7 @@ export const projects: Project[] = [
     title: "HackFlow AI",
     tagline: "AI-powered developer evaluation platform",
     description:
-      "HackFlow AI is a developer evaluation platform that automatically analyzes GitHub repositories and generates project insights using an AI-powered assessment pipeline. The system combines Next.js, FastAPI, PostgreSQL, JWT authentication, and microservice architecture to process repositories and generate rankings. Real-time leaderboards and automated scoring reduce manual project review effort while providing transparent evaluation metrics.",
+      "A Python FastAPI ML pipeline evaluates GitHub repositories with NLP while a Node.js REST API handles product workflows. Organizers, judges, and participants use role-based access with JWT authentication and PostgreSQL-backed data. Real-time leaderboards turn manual hackathon judging into a faster, more transparent evaluation system.",
     stack: [
       "Next.js",
       "Node.js",
@@ -23,7 +23,7 @@ export const projects: Project[] = [
     title: "Rakshak Fraud Platform",
     tagline: "Fraud analysis with AI-powered risk scoring",
     description:
-      "Rakshak is a fraud analysis platform built around a three-tier role-based access model with secure authentication and authorization controls. The platform uses OpenAI-powered risk evaluation to generate fraud scores between 0 and 100 while Redis caching improves response times for repeated analysis requests. Dockerized deployment ensures consistent environments across development and production.",
+      "OpenAI scores every complaint from 0-100 and returns plain-English fraud reasoning for analysts. The platform uses 3-tier RBAC across user, analyst, and admin roles with JWT-secured Express APIs. Redis caching and Dockerized services keep repeated analysis fast and deployment predictable.",
     stack: [
       "Node.js",
       "MongoDB",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     title: "AI Credit Risk Advisor",
     tagline: "Explainable AI for financial risk assessment",
     description:
-      "AI Credit Risk Advisor evaluates financial profiles using debt-to-income ratios, cash-flow patterns, and credit risk indicators. The system generates explainable recommendations instead of returning black-box scores, helping users understand the factors affecting risk assessments. Interactive visualizations provide a clear breakdown of financial metrics and decision reasoning.",
+      "Cashflow and debt-to-income metrics drive a credit-risk engine instead of vague black-box scoring. OpenAI converts the financial signals into explainable recommendations a user can actually understand. Recharts dashboards show risk trends over time so decisions are visible, not hidden in a number.",
     stack: [
       "React",
       "Node.js",

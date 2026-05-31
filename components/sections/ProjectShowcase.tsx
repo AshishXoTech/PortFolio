@@ -25,9 +25,9 @@ const PROJECTS: ProjectShowcaseItem[] = [
     githubUrl: "https://github.com/AshishXoTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "FastAPI", "JWT"],
     description: [
-      "AI-powered hackathon platform with auto-evaluation of GitHub repos.",
-      "Microservices: Node REST API and Python FastAPI ML pipeline in parallel.",
-      "Real-time leaderboards and role-based access for judges and participants.",
+      "A Python FastAPI ML pipeline evaluates GitHub repositories with NLP while a Node.js REST API handles product workflows.",
+      "Organizers, judges, and participants use role-based access with JWT authentication and PostgreSQL-backed data.",
+      "Real-time leaderboards turn manual hackathon judging into a faster, more transparent evaluation system.",
     ],
   },
   {
@@ -48,9 +48,9 @@ const PROJECTS: ProjectShowcaseItem[] = [
       "Redis",
     ],
     description: [
-      "Enterprise fraud detection with 3-tier RBAC (user/analyst/admin).",
-      "OpenAI scores each complaint 0-100 with plain-English explanations.",
-      "Fully Dockerized deployment with Redis caching layer.",
+      "OpenAI scores every complaint from 0-100 and returns plain-English fraud reasoning for analysts.",
+      "The platform uses 3-tier RBAC across user, analyst, and admin roles with JWT-secured Express APIs.",
+      "Redis caching and Dockerized services keep repeated analysis fast and deployment predictable.",
     ],
   },
   {
@@ -62,9 +62,9 @@ const PROJECTS: ProjectShowcaseItem[] = [
     githubUrl: "https://github.com/AshishXoTech",
     stack: ["React.js", "Node.js", "OpenAI API", "Recharts", "Tailwind CSS"],
     description: [
-      "Credit risk scoring engine using cashflow and debt-to-income metrics.",
-      "OpenAI delivers plain-English financial advisory recommendations.",
-      "Interactive Recharts dashboards visualize risk trends over time.",
+      "Cashflow and debt-to-income metrics drive a credit-risk engine instead of vague black-box scoring.",
+      "OpenAI converts the financial signals into explainable recommendations a user can actually understand.",
+      "Recharts dashboards show risk trends over time so decisions are visible, not hidden in a number.",
     ],
   },
 ];
