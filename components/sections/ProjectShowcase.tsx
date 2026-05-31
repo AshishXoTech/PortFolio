@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 
 interface ProjectShowcaseItem {
   accent: string;
   accentRgb: string;
+  architecture: ArchitectureLayer[];
   description: [string, string, string];
   githubUrl: string;
   liveUrl?: string;
@@ -13,6 +14,11 @@ interface ProjectShowcaseItem {
   number: string;
   stack: string[];
   tagline: string;
+}
+
+interface ArchitectureLayer {
+  color: string;
+  label: string;
 }
 
 const PROJECTS: ProjectShowcaseItem[] = [
@@ -24,10 +30,16 @@ const PROJECTS: ProjectShowcaseItem[] = [
     accentRgb: "0, 255, 65",
     githubUrl: "https://github.com/AshishXoTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "FastAPI", "JWT"],
+    architecture: [
+      { label: "Frontend", color: "#00ff41" },
+      { label: "Backend", color: "#7c3aed" },
+      { label: "Database", color: "#ff003c" },
+      { label: "AI", color: "#00bfff" },
+    ],
     description: [
-      "A Python FastAPI ML pipeline evaluates GitHub repositories with NLP while a Node.js REST API handles product workflows.",
-      "Organizers, judges, and participants use role-based access with JWT authentication and PostgreSQL-backed data.",
-      "Real-time leaderboards turn manual hackathon judging into a faster, more transparent evaluation system.",
+      "Python FastAPI ML pipeline auto-evaluates GitHub repos with NLP scoring",
+      "3-tier role system (organizer / judge / participant) with JWT auth",
+      "Real-time leaderboards replace manual judging entirely",
     ],
   },
   {
@@ -47,10 +59,16 @@ const PROJECTS: ProjectShowcaseItem[] = [
       "Docker",
       "Redis",
     ],
+    architecture: [
+      { label: "Backend", color: "#7c3aed" },
+      { label: "Database", color: "#ff003c" },
+      { label: "AI", color: "#00bfff" },
+      { label: "Cache", color: "#f59e0b" },
+    ],
     description: [
-      "OpenAI scores every complaint from 0-100 and returns plain-English fraud reasoning for analysts.",
-      "The platform uses 3-tier RBAC across user, analyst, and admin roles with JWT-secured Express APIs.",
-      "Redis caching and Dockerized services keep repeated analysis fast and deployment predictable.",
+      "OpenAI scores every fraud complaint 0-100 with plain-English reasoning",
+      "3-tier RBAC (user / analyst / admin) with JWT-secured Express APIs",
+      "Redis caching + Dockerized services for predictable deployment",
     ],
   },
   {
@@ -61,16 +79,31 @@ const PROJECTS: ProjectShowcaseItem[] = [
     accentRgb: "124, 58, 237",
     githubUrl: "https://github.com/AshishXoTech",
     stack: ["React.js", "Node.js", "OpenAI API", "Recharts", "Tailwind CSS"],
+    architecture: [
+      { label: "Frontend", color: "#00ff41" },
+      { label: "Backend", color: "#7c3aed" },
+      { label: "AI", color: "#00bfff" },
+      { label: "Charts", color: "#f59e0b" },
+    ],
     description: [
-      "Cashflow and debt-to-income metrics drive a credit-risk engine instead of vague black-box scoring.",
-      "OpenAI converts the financial signals into explainable recommendations a user can actually understand.",
-      "Recharts dashboards show risk trends over time so decisions are visible, not hidden in a number.",
+      "Cashflow and debt-to-income metrics drive the 0-100 risk score",
+      "OpenAI converts financial signals into recommendations users understand",
+      "Recharts dashboards make trends visible — not buried in numbers",
     ],
   },
 ];
 
+const CODE_RAIN_COLUMNS = Array.from({ length: 20 }, (_, index) => ({
+  id: `code-rain-${index}`,
+  left: `${(index / 19) * 100}%`,
+  delay: `${(index % 7) * -1.3}s`,
+  duration: `${8 + (index % 8)}s`,
+  chars: ["{", "}", "0", "1", "=>", "fn", "if", "api", "jwt", "sql", "&&", "</>"],
+}));
+
 export function ProjectShowcase(): JSX.Element {
   const gridRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -96,122 +129,228 @@ export function ProjectShowcase(): JSX.Element {
     };
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+
+    const handleMouseMove = (event: globalThis.MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      section.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+      section.style.setProperty("--my", `${event.clientY - rect.top}px`);
+    };
+
+    section.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    return () => {
+      section.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const handleCardMouseMove = (event: MouseEvent<HTMLElement>) => {
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(1200px) translateY(-8px) scale(1.01) rotateX(${y * -8}deg) rotateY(${x * 8}deg)`;
+  };
+
+  const handleCardMouseLeave = (event: MouseEvent<HTMLElement>) => {
+    const card = event.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) translateY(0)";
+  };
+
   return (
-    <section className="min-h-screen py-20" aria-label="Project showcase">
-      <div className="max-w-3xl">
-        <p className="font-mono text-xs uppercase tracking-[0.28em] text-green">
-          Scene 04 / Projects
-        </p>
-        <h2 className="mt-3 font-display text-4xl font-bold text-text md:text-6xl">
-          Cards flip up like shipped artifacts.
-        </h2>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-text/70 md:text-lg">
-          Three full-stack builds showing product thinking, backend depth, and
-          practical AI integration.
-        </p>
+    <section
+      ref={sectionRef}
+      className="project-showcase-section relative min-h-screen overflow-hidden px-6 py-28 md:px-12"
+      aria-label="Project showcase"
+    >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        <div className="project-mouse-spot absolute inset-0" />
+        {CODE_RAIN_COLUMNS.map((column) => (
+          <div
+            key={column.id}
+            className="project-code-rain-column"
+            style={{
+              animationDelay: column.delay,
+              animationDuration: column.duration,
+              left: column.left,
+            }}
+          >
+            <div className="flex flex-col gap-5">
+              {column.chars.map((char, index) => (
+                <span key={`${column.id}-${char}-${index}`}>{char}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div className="absolute left-[10%] top-[20%] h-[300px] w-[300px] rounded-full bg-green/[0.04] blur-[80px]" />
+        <div className="absolute left-[40%] top-[30%] h-[350px] w-[350px] rounded-full bg-red/[0.04] blur-[90px]" />
+        <div className="absolute right-[8%] top-[20%] h-[300px] w-[300px] rounded-full bg-purple/[0.05] blur-[80px]" />
       </div>
 
-      <div
-        ref={gridRef}
-        className="mt-10 grid gap-5 md:grid-cols-3"
-        style={{ perspective: "1200px" }}
-      >
-        {PROJECTS.map((project, index) => (
-          <article
-            key={project.name}
-            data-project-showcase-card
-            className="project-showcase-card relative overflow-hidden rounded-[20px] border border-[rgba(255,255,255,0.07)] bg-[rgba(8,8,20,0.75)] p-8 backdrop-blur-[24px]"
-            style={
-              {
-                "--project-accent-rgb": project.accentRgb,
-                transitionDelay: `${index * 0.15}s`,
-              } as CSSProperties & {
-                "--project-accent-rgb": string;
+      <div className="relative z-10 mx-auto w-full max-w-[1200px]">
+        <div className="mb-20 max-w-3xl">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#333]">
+            04 / Shipped Products
+          </p>
+          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+            Things I
+            <span className="block text-green">actually built.</span>
+          </h2>
+          <p className="mt-3 font-sans text-[15px] leading-7 text-muted">
+            Three production-grade systems. Real stack. Real architecture.
+          </p>
+        </div>
+
+        <div
+          ref={gridRef}
+          className="grid gap-5 lg:grid-cols-3"
+          style={{ perspective: "1200px" }}
+        >
+          {PROJECTS.map((project, index) => (
+            <article
+              key={project.name}
+              data-project-showcase-card
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+              className="project-showcase-card group relative flex min-h-[520px] cursor-default flex-col overflow-hidden rounded-[24px] border border-[rgba(255,255,255,0.055)] bg-[rgba(6,6,16,0.85)] p-8"
+              style={
+                {
+                  "--project-accent": project.accent,
+                  "--project-accent-rgb": project.accentRgb,
+                  "--project-delay": `${index * 0.12}s`,
+                } as CSSProperties & {
+                  "--project-accent": string;
+                  "--project-accent-rgb": string;
+                  "--project-delay": string;
+                }
               }
-            }
-          >
-            <div className="relative z-10 flex items-start justify-between gap-4">
-              <span className="font-mono text-[10px] text-[#444]">
-                {project.number}
-              </span>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded border border-white/10 px-2 py-1 font-mono text-[10px] text-text/70 transition hover:border-white/35 hover:text-text"
-              >
-                GitHub
-              </a>
-            </div>
+            >
+              <div className="project-card-top-glow" aria-hidden="true" />
+              <div
+                className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-20 blur-[70px] transition-opacity duration-500 group-hover:opacity-35"
+                style={{ backgroundColor: project.accent }}
+                aria-hidden="true"
+              />
 
-            <div className="relative z-10 mt-8">
-              <h3 className="font-display text-[22px] font-extrabold text-[#e8e8f0]">
-                {project.name}
-              </h3>
-              <p
-                className="mt-2 font-mono text-[11px]"
-                style={{ color: project.accent }}
-              >
-                {project.tagline}
-              </p>
-
-              <div className="my-4 h-px bg-[rgba(255,255,255,0.05)]" />
-
-              <div className="space-y-3 font-sans text-[13px] leading-[1.8] text-[#6a6a8a]">
-                {project.description.map((sentence) => (
-                  <p key={sentence}>{sentence}</p>
-                ))}
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.stack.map((item) => (
+              <div className="relative z-10 mb-6 flex items-start justify-between gap-4">
+                <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.1em] text-[var(--project-accent)]">
                   <span
-                    key={item}
-                    className="rounded border px-2 py-1 font-mono text-[10px]"
-                    style={{
-                      backgroundColor: `rgba(${project.accentRgb}, 0.08)`,
-                      borderColor: `rgba(${project.accentRgb}, 0.3)`,
-                      color: project.accent,
-                    }}
-                  >
-                    {item}
+                    className="mr-2 h-1 w-1"
+                    style={{ backgroundColor: project.accent }}
+                    aria-hidden="true"
+                  />
+                  {project.number}
+                </span>
+                <div className="flex flex-wrap justify-end gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.06] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-[#555]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green" aria-hidden="true" />
+                    Deployed
                   </span>
-                ))}
-              </div>
-
-              <div className="mt-8 flex gap-3">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded border border-white/40 px-4 py-2 font-display text-xs font-bold text-text transition hover:bg-white hover:text-background"
-                >
-                  GitHub
-                </a>
-                {project.liveUrl ? (
                   <a
-                    href={project.liveUrl}
+                    href={project.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded px-4 py-2 font-display text-xs font-bold text-background transition hover:brightness-110"
-                    style={{ backgroundColor: project.accent }}
+                    className="rounded border border-white/[0.08] px-2.5 py-1 font-mono text-[10px] text-[#444] transition hover:border-white/25 hover:text-[#e0e0e0]"
                   >
-                    Live
+                    ↗ GitHub
                   </a>
-                ) : (
-                  <button
-                    type="button"
-                    disabled
-                    className="rounded px-4 py-2 font-display text-xs font-bold text-background opacity-60"
-                    style={{ backgroundColor: project.accent }}
-                  >
-                    Live
-                  </button>
-                )}
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+
+              <div className="relative z-10">
+                <h3 className="font-display text-[28px] font-black leading-tight tracking-[-0.02em] text-[#e8e8f0]">
+                  {project.name}
+                </h3>
+                <p className="mt-1 font-mono text-[11px]" style={{ color: project.accent }}>
+                  {project.tagline}
+                </p>
+
+                <div className="mb-5 mt-5 h-px bg-white/[0.04]" />
+
+                <div className="space-y-2">
+                  {project.description.map((bullet) => (
+                    <div key={bullet} className="flex gap-3 font-sans text-[13px] leading-[1.75] text-[#6a6a8a]">
+                      <span
+                        className="mt-2 h-1 w-1 shrink-0"
+                        style={{ backgroundColor: project.accent }}
+                        aria-hidden="true"
+                      />
+                      <p>{bullet}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-1.5">
+                  {project.stack.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded px-2.5 py-1 font-mono text-[10px]"
+                      style={{
+                        backgroundColor: `rgba(${project.accentRgb}, 0.06)`,
+                        border: `1px solid rgba(${project.accentRgb}, 0.25)`,
+                        color: project.accent,
+                      }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative z-10 mt-auto flex items-center justify-between gap-4 pt-8">
+                <div className="flex items-center gap-2" aria-label={`${project.name} architecture layers`}>
+                  {project.architecture.map((layer) => (
+                    <span
+                      key={layer.label}
+                      title={layer.label}
+                      className="h-2 w-2 rounded-full shadow-[0_0_14px_currentColor]"
+                      style={{ backgroundColor: layer.color, color: layer.color }}
+                    />
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-md border border-white/[0.12] px-[18px] py-2 font-mono text-[11px] text-[#888] transition hover:border-white/30 hover:text-[#e0e0e0]"
+                  >
+                    GitHub
+                  </a>
+                  {project.liveUrl ? (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-md px-[18px] py-2 font-mono text-[11px] font-bold text-background transition hover:brightness-110"
+                      style={{
+                        backgroundColor: project.accent,
+                        boxShadow: `0 0 20px rgba(${project.accentRgb}, 0.18)`,
+                      }}
+                    >
+                      Live
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className="rounded-md px-[18px] py-2 font-mono text-[11px] font-bold text-background transition disabled:cursor-not-allowed disabled:opacity-70"
+                      style={{
+                        backgroundColor: project.accent,
+                        boxShadow: `0 0 20px rgba(${project.accentRgb}, 0.18)`,
+                      }}
+                    >
+                      Live
+                    </button>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
