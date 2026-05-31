@@ -549,12 +549,56 @@ body {
   color: rgba(255, 255, 255, 0.015);
 }
 
+.nav-click-tooltip {
+  animation: nav-tooltip-pop 1.2s ease both;
+}
+
+.bottom-taskbar-ticker {
+  animation: bottom-taskbar-ticker 22s linear infinite;
+}
+
+#home,
+#about,
+#projects,
+#skills,
+#achievements,
+#terminal,
+#contact,
+#blog {
+  scroll-margin-top: 96px;
+}
+
 @keyframes terminal-code-fall {
   from {
     transform: translateY(-100%);
   }
   to {
     transform: translateY(180%);
+  }
+}
+
+@keyframes nav-tooltip-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+  10%,
+  82% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+}
+
+@keyframes bottom-taskbar-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -605,7 +649,9 @@ body {
   .skill-ecosystem-pill,
   .achievement-star,
   .achievement-counter-pulse,
-  .terminal-code-rain {
+  .terminal-code-rain,
+  .bottom-taskbar-ticker,
+  .nav-click-tooltip {
     animation: none;
   }
 }

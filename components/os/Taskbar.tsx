@@ -1,6 +1,5 @@
 "use client";
 
-import { Clock, Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useOS } from "@/hooks/useOS";
 import { cn } from "@/lib/utils";
@@ -21,7 +20,7 @@ export function Taskbar(): JSX.Element {
     };
 
     update();
-    const interval = setInterval(update, 60000);
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -35,17 +34,19 @@ export function Taskbar(): JSX.Element {
   };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-[500] flex h-12 items-center justify-between border-t border-glass bg-glass px-4 backdrop-blur-glass">
-      <div className="flex items-center gap-2">
-        <span className="font-mono text-sm font-bold text-green">AshishOS</span>
-        <div className="flex gap-1">
+    <footer className="group fixed bottom-0 left-0 right-0 z-[999] flex h-9 items-center justify-between border-t border-white/[0.04] bg-[rgba(5,5,16,0.9)] px-5 backdrop-blur-[20px] transition-colors hover:border-white/[0.08] hover:bg-[rgba(5,5,16,0.95)]">
+      <div className="flex min-w-0 items-center gap-3">
+        <span className="shrink-0 font-mono text-[11px] font-semibold text-green">
+          AshishOS
+        </span>
+        <div className="hidden max-w-[260px] gap-1 overflow-hidden md:flex">
           {windows.map((window) => (
             <button
               key={window.id}
               type="button"
               onClick={() => handleTaskClick(window.id, window.appId)}
               className={cn(
-                "rounded px-2 py-1 font-mono text-xs transition-colors",
+                "shrink-0 rounded-full px-2 py-0.5 font-mono text-[10px] transition-colors",
                 window.isMinimized
                   ? "text-muted hover:text-text"
                   : "bg-green/10 text-green"
@@ -57,12 +58,30 @@ export function Taskbar(): JSX.Element {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 font-mono text-xs text-muted">
-        <Wifi className="h-4 w-4 text-green" aria-hidden="true" />
-        <span className="flex items-center gap-1">
-          <Clock className="h-3 w-3" aria-hidden="true" />
-          {time}
-        </span>
+      <div className="pointer-events-none absolute left-1/2 hidden w-[500px] max-w-[42vw] -translate-x-1/2 overflow-hidden whitespace-nowrap font-mono text-[10px] tracking-[0.05em] text-[#333] md:block">
+        <div className="bottom-taskbar-ticker inline-flex gap-6">
+          <span>B.Tech CSE 2024-2028</span>
+          <span>|</span>
+          <span>UEM Jaipur</span>
+          <span>|</span>
+          <span>Software Engineer track: Java + DSA</span>
+          <span>|</span>
+          <span>AshishXoTech</span>
+          <span>|</span>
+          <span>B.Tech CSE 2024-2028</span>
+          <span>|</span>
+          <span>UEM Jaipur</span>
+          <span>|</span>
+          <span>Software Engineer track: Java + DSA</span>
+          <span>|</span>
+          <span>AshishXoTech</span>
+        </div>
+      </div>
+
+      <div className="flex shrink-0 items-center gap-3 font-mono text-[10px] text-[#333]">
+        <span>{time}</span>
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green shadow-[0_0_8px_rgba(0,255,65,0.8)]" />
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-purple shadow-[0_0_8px_rgba(124,58,237,0.8)]" />
       </div>
     </footer>
   );

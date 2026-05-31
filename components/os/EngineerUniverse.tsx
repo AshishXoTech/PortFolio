@@ -362,7 +362,7 @@ export function EngineerUniverse({
     <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden pb-28">
       <AtmosphereLayers />
 
-      <section className="relative min-h-screen overflow-hidden pt-20">
+      <section id="home" className="relative min-h-screen overflow-hidden pt-20">
         <div className="hero-grid-texture pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-80px)] max-w-[1200px] items-center gap-12 px-6 py-16 md:grid-cols-[52fr_48fr] md:px-12">
           <div className="min-w-0">
@@ -506,6 +506,7 @@ export function EngineerUniverse({
       </section>
 
       <section
+        id="about"
         ref={overviewRef}
         data-universe-scene
         className="relative flex min-h-screen flex-col justify-center overflow-hidden py-24"
@@ -541,21 +542,23 @@ export function EngineerUniverse({
 
       <EngineerStory />
 
-      <ProjectShowcase />
+      <div id="projects">
+        <ProjectShowcase />
+      </div>
 
-      <section data-universe-scene>
+      <section id="skills" data-universe-scene>
         <SkillsApp />
       </section>
 
-      <section data-universe-scene>
+      <section id="achievements" data-universe-scene>
         <AchievementsApp />
       </section>
 
-      <section data-universe-scene>
+      <section id="terminal" data-universe-scene>
         <TerminalSection />
       </section>
 
-      <section data-universe-scene>
+      <section id="contact" data-universe-scene>
         <ContactSection />
       </section>
 
