@@ -1,11 +1,6 @@
 "use client";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useMemo, useRef, useState } from "react";
-import type { RefObject } from "react";
-import { useIsMobile } from "@/hooks/useMediaQuery";
-import HeroScene from "@/components/three/HeroScene";
+import { useEffect, useRef, useState } from "react";
 
 type SceneId = "blank" | "bug" | "commit" | "win" | "mission";
 
@@ -13,6 +8,7 @@ interface StoryScene {
   accent: string;
   id: SceneId;
   label: string;
+  metric: string;
   title: string;
   subtitle: string;
 }
@@ -22,6 +18,7 @@ const STORY_SCENES: StoryScene[] = [
     id: "blank",
     accent: "#00ff41",
     label: "Day 1",
+    metric: "00:00",
     title: "The blank file stares back.",
     subtitle:
       "No error message. No warning. Just possibility and absolute terror.",
@@ -30,6 +27,7 @@ const STORY_SCENES: StoryScene[] = [
     id: "bug",
     accent: "#ff003c",
     label: "Every night",
+    metric: "02:47",
     title: "Line 47. Again.",
     subtitle:
       "Stack Overflow has 4 answers. None of them work. Chai cup is empty.",
@@ -38,6 +36,7 @@ const STORY_SCENES: StoryScene[] = [
     id: "commit",
     accent: "#f59e0b",
     label: "3:14 AM",
+    metric: "a3f2b1c",
     title: "It finally works.",
     subtitle: "No idea why. Not touching it. Committing and sleeping.",
   },
@@ -45,6 +44,7 @@ const STORY_SCENES: StoryScene[] = [
     id: "win",
     accent: "#f59e0b",
     label: "Hackathon Season",
+    metric: "Rank #1",
     title: "Rank 1. Three times.",
     subtitle: "100+ teams. 48 hours. The bugs were worth it.",
   },
@@ -52,6 +52,7 @@ const STORY_SCENES: StoryScene[] = [
     id: "mission",
     accent: "#7c3aed",
     label: "Right now",
+    metric: "SWE next",
     title: "Not done yet.",
     subtitle: "Java. DSA. System Design. The SWE role is the next commit.",
   },
@@ -70,130 +71,6 @@ const ERROR_LINES = [
   "at Router.handle (/app/node_modules/router.js:132:9)",
   "at async main (/app/server.js:88:5)",
 ] as const;
-
-gsap.registerPlugin(ScrollTrigger);
-
-function useDayStoryMotion(
-  sectionRef: RefObject<HTMLElement>,
-  sceneRefs: RefObject<HTMLDivElement>[],
-  isMobile: boolean,
-  setActiveScene: (index: number) => void
-): void {
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || isMobile) return undefined;
-
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "+=500%",
-        pin: true,
-        pinSpacing: true,
-        onUpdate: (self) => {
-          const nextIndex = Math.min(
-            STORY_SCENES.length - 1,
-            Math.floor(self.progress * STORY_SCENES.length)
-          );
-          setActiveScene(nextIndex);
-        },
-      });
-
-      sceneRefs.forEach((sceneRef, index) => {
-        const scene = sceneRef.current;
-        if (!scene) return;
-
-        const start = (index / STORY_SCENES.length) * 100;
-        const end = ((index + 1) / STORY_SCENES.length) * 100;
-
-        if (index === 0) {
-          gsap.set(scene, { opacity: 1, y: 0 });
-        } else {
-          gsap.fromTo(
-            scene,
-            { opacity: 0, y: 40 },
-            {
-              opacity: 1,
-              y: 0,
-              scrollTrigger: {
-                trigger: section,
-                start: `${start}% top`,
-                end: `${start + 8}% top`,
-                scrub: 1,
-              },
-            }
-          );
-        }
-
-        if (index < STORY_SCENES.length - 1) {
-          gsap.to(scene, {
-            opacity: 0,
-            y: -40,
-            scrollTrigger: {
-              trigger: section,
-              start: `${end - 8}% top`,
-              end: `${end}% top`,
-              scrub: 1,
-            },
-          });
-        }
-      });
-    }, section);
-
-    return () => {
-      ctx.revert();
-    };
-  }, [isMobile, sceneRefs, sectionRef, setActiveScene]);
-}
-
-function useMobileReveal(
-  sectionRef: RefObject<HTMLElement>,
-  isMobile: boolean,
-  setActiveScene: (index: number) => void
-): boolean[] {
-  const [visibleScenes, setVisibleScenes] = useState<boolean[]>(
-    STORY_SCENES.map((_, index) => index === 0)
-  );
-
-  useEffect(() => {
-    if (!isMobile) {
-      setVisibleScenes(STORY_SCENES.map((_, index) => index === 0));
-      return undefined;
-    }
-
-    const section = sectionRef.current;
-    if (!section) return undefined;
-
-    const nodes = section.querySelectorAll<HTMLElement>("[data-day-scene]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const indexValue = entry.target.getAttribute("data-scene-index");
-          if (!indexValue || !entry.isIntersecting) return;
-
-          const index = Number(indexValue);
-          if (!Number.isInteger(index)) return;
-
-          setActiveScene(index);
-          setVisibleScenes((current) =>
-            current.map((visible, currentIndex) =>
-              currentIndex === index ? true : visible
-            )
-          );
-        });
-      },
-      { threshold: 0.35 }
-    );
-
-    nodes.forEach((node) => observer.observe(node));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [isMobile, sectionRef, setActiveScene]);
-
-  return visibleScenes;
-}
 
 function EditorShell({
   children,
@@ -415,97 +292,142 @@ function SceneExtra({ id }: { id: SceneId }): JSX.Element {
 }
 
 export function EngineerStory(): JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
-  const sceneOneRef = useRef<HTMLDivElement>(null);
-  const sceneTwoRef = useRef<HTMLDivElement>(null);
-  const sceneThreeRef = useRef<HTMLDivElement>(null);
-  const sceneFourRef = useRef<HTMLDivElement>(null);
-  const sceneFiveRef = useRef<HTMLDivElement>(null);
   const [activeScene, setActiveScene] = useState(0);
-  const isMobile = useIsMobile();
-
-  const sceneRefs = useMemo(
-    () =>
-      [
-        sceneOneRef,
-        sceneTwoRef,
-        sceneThreeRef,
-        sceneFourRef,
-        sceneFiveRef,
-      ] satisfies RefObject<HTMLDivElement>[],
-    []
-  );
-
-  useDayStoryMotion(sectionRef, sceneRefs, isMobile, setActiveScene);
-  const visibleScenes = useMobileReveal(sectionRef, isMobile, setActiveScene);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(0);
   const activeAccent = STORY_SCENES[activeScene]?.accent ?? "#00ff41";
+  const activeStory = STORY_SCENES[activeScene] ?? STORY_SCENES[0];
+
+  useEffect(() => {
+    if (isPaused) return undefined;
+
+    timerRef.current = window.setInterval(() => {
+      setActiveScene((current) => (current + 1) % STORY_SCENES.length);
+    }, 4200);
+
+    return () => {
+      window.clearInterval(timerRef.current);
+      timerRef.current = 0;
+    };
+  }, [isPaused]);
 
   return (
     <section
-      ref={sectionRef}
-      className="relative min-h-screen overflow-hidden py-20 md:h-screen md:py-0"
+      className="relative overflow-hidden py-24"
       aria-label="A day in the life"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-20 blur-[2px] md:opacity-25">
-        <HeroScene />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_34%_50%,rgba(0,255,65,0.08),transparent_35%),linear-gradient(90deg,rgba(5,5,16,0.9),rgba(5,5,16,0.54),rgba(5,5,16,0.9))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,255,65,0.08),transparent_30%),radial-gradient(circle_at_82%_72%,rgba(124,58,237,0.1),transparent_34%)]" />
 
-      {STORY_SCENES.map((scene, index) => (
-        <div
-          key={scene.id}
-          ref={sceneRefs[index]}
-          data-day-scene
-          data-scene-index={index}
-          className={[
-            "relative z-10 mx-auto grid min-h-[88vh] max-w-[1200px] items-center gap-10 px-4 md:absolute md:inset-0 md:min-h-0 md:grid-cols-[45fr_55fr] md:px-12",
-            isMobile
-              ? visibleScenes[index]
-                ? "translate-y-0 opacity-100 transition duration-700 ease-out"
-                : "translate-y-8 opacity-0 transition duration-700 ease-out"
-              : "",
-          ].join(" ")}
-          style={!isMobile ? { opacity: index === 0 ? 1 : 0 } : undefined}
-        >
-          <div className="order-2 md:order-1">
-            <SceneVisual id={scene.id} />
+      <div className="relative z-10 mx-auto max-w-[1200px] px-4 md:px-12">
+        <div className="mb-10 max-w-2xl">
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-green">
+            Scene 03 / Engineer Story
+          </p>
+          <h2 className="mt-3 font-display text-4xl font-black leading-tight text-[#e8e8f0] md:text-6xl">
+            A day in the life, without the drama filter.
+          </h2>
+          <p className="mt-4 font-sans text-base leading-7 text-[#6a6a8a]">
+            A realistic loop: blank files, ugly errors, tiny breakthroughs,
+            hackathon pressure, and the fundamentals I am building now.
+          </p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+          <div className="glass rounded-2xl p-3">
+            {STORY_SCENES.map((scene, index) => {
+              const isActive = index === activeScene;
+
+              return (
+                <button
+                  key={scene.id}
+                  type="button"
+                  onClick={() => setActiveScene(index)}
+                  className={[
+                    "group mb-2 grid w-full grid-cols-[32px_1fr_auto] items-center gap-3 rounded-xl border p-3 text-left transition last:mb-0",
+                    isActive
+                      ? "border-white/10 bg-white/[0.04]"
+                      : "border-transparent hover:border-white/5 hover:bg-white/[0.025]",
+                  ].join(" ")}
+                >
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border font-mono text-[10px]"
+                    style={{
+                      borderColor: isActive ? scene.accent : "rgba(255,255,255,0.08)",
+                      color: isActive ? scene.accent : "#555",
+                    }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0">
+                    <span
+                      className="block font-mono text-[10px] uppercase tracking-[0.12em]"
+                      style={{ color: isActive ? scene.accent : "#444" }}
+                    >
+                      {scene.label}
+                    </span>
+                    <span className="mt-1 block truncate font-display text-sm font-bold text-[#e8e8f0]">
+                      {scene.title}
+                    </span>
+                  </span>
+                  <span className="font-mono text-[10px] text-[#444]">
+                    {scene.metric}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          <div className="order-1 md:order-2">
-            <p
-              className="mb-5 font-mono text-[11px] uppercase tracking-[0.12em]"
-              style={{ color: scene.accent }}
-            >
-              {scene.label}
-            </p>
-            <h2 className="mb-5 max-w-2xl font-display text-[clamp(40px,5vw,72px)] font-black leading-none text-[#e8e8f0]">
-              {scene.title}
-            </h2>
-            <p className="max-w-[440px] font-sans text-base leading-[1.8] text-[#6a6a8a]">
-              {scene.subtitle}
-            </p>
-            <SceneExtra id={scene.id} />
+
+          <div className="glass overflow-hidden rounded-3xl border-white/[0.07]">
+            <div className="grid gap-0 lg:grid-cols-[48fr_52fr]">
+              <div className="relative min-h-[420px] border-b border-white/[0.06] p-5 lg:border-b-0 lg:border-r">
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-20"
+                  style={{
+                    background: `radial-gradient(circle at 50% 40%, ${activeAccent}33, transparent 55%)`,
+                  }}
+                />
+                <div key={`visual-${activeStory.id}`} className="relative z-10 animate-[fadeIn_0.35s_ease-out]">
+                  <SceneVisual id={activeStory.id} />
+                </div>
+              </div>
+
+              <div className="flex min-h-[420px] flex-col justify-center p-7 md:p-10">
+                <p
+                  className="mb-5 font-mono text-[11px] uppercase tracking-[0.12em]"
+                  style={{ color: activeStory.accent }}
+                >
+                  {activeStory.label}
+                </p>
+                <h3
+                  key={`title-${activeStory.id}`}
+                  className="mb-5 font-display text-[clamp(34px,4vw,60px)] font-black leading-none text-[#e8e8f0]"
+                >
+                  {activeStory.title}
+                </h3>
+                <p className="max-w-[440px] font-sans text-base leading-[1.8] text-[#6a6a8a]">
+                  {activeStory.subtitle}
+                </p>
+                <SceneExtra id={activeStory.id} />
+
+                <div className="mt-10">
+                  <div className="mb-2 flex items-center justify-between font-mono text-[10px] text-[#444]">
+                    <span>{String(activeScene + 1).padStart(2, "0")} / 05</span>
+                    <span>{isPaused ? "Paused" : "Auto playing"}</span>
+                  </div>
+                  <div className="h-1 overflow-hidden rounded bg-white/[0.06]">
+                    <div
+                      key={activeScene}
+                      className="story-autoplay-progress h-full rounded"
+                      style={{ backgroundColor: activeAccent }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      ))}
-
-      <div className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2">
-        <div className="flex gap-2">
-          {STORY_SCENES.map((scene, index) => (
-            <span
-              key={scene.id}
-              className="h-2.5 w-2.5 rounded-full border"
-              style={{
-                backgroundColor: index === activeScene ? scene.accent : "transparent",
-                borderColor: index === activeScene ? scene.accent : "rgba(255,255,255,0.18)",
-                boxShadow:
-                  index === activeScene ? `0 0 16px ${scene.accent}80` : "none",
-              }}
-            />
-          ))}
-        </div>
-        <p className="font-mono text-[10px] text-[#6a6a8a]">
-          {String(activeScene + 1).padStart(2, "0")} / 05
-        </p>
       </div>
     </section>
   );

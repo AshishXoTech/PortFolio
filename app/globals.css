@@ -188,6 +188,26 @@ body {
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes story-autoplay-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .day-story-type {
   overflow: hidden;
   white-space: nowrap;
@@ -204,6 +224,11 @@ body {
 
 .day-story-progress {
   animation: day-story-progress 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: left center;
+}
+
+.story-autoplay-progress {
+  animation: story-autoplay-progress 4.2s linear both;
   transform-origin: left center;
 }
 
