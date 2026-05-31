@@ -19,9 +19,9 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import type { RefObject } from "react";
 import { achievements } from "@/lib/data/achievements";
-import { projects } from "@/lib/data/projects";
 import { skills } from "@/lib/data/skills";
 import { EngineerStory } from "@/components/sections/EngineerStory";
+import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 import type { AppId } from "@/types/os";
 
 interface EngineerUniverseProps {
@@ -230,29 +230,7 @@ export function EngineerUniverse({
 
       <EngineerStory />
 
-      <section data-universe-scene className="min-h-screen py-20">
-        <SceneLabel
-          kicker="Scene 04 / Projects"
-          title="Cards rotate in like shipped artifacts."
-          body="Every featured project shows product thinking, full-stack execution, and practical AI integration."
-        />
-        <div className="mt-10 grid gap-5 [perspective:1200px] md:grid-cols-3">
-          {projects.map((project) => (
-            <article key={project.id} data-project-card className="glass-panel rounded-lg p-5">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-green">{project.tagline}</p>
-              <h3 className="mt-4 font-display text-2xl font-bold text-text">{project.title}</h3>
-              <p className="mt-3 line-clamp-5 text-sm leading-6 text-text/65">{project.description}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.stack.slice(0, 5).map((item) => (
-                  <span key={item} className="rounded border border-glass bg-white/[0.03] px-2 py-1 font-mono text-[11px] text-text/70">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ProjectShowcase />
 
       <section data-universe-scene className="grid min-h-screen items-center gap-8 py-20 md:grid-cols-[0.85fr_1.15fr]">
         <SceneLabel
