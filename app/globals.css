@@ -974,6 +974,172 @@ body {
   animation: about-ring-spin-reverse 15s linear infinite;
 }
 
+.boot-kernel-panel {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(0, 255, 65, 0.025), transparent 30%),
+    radial-gradient(circle at 84% 26%, rgba(124, 58, 237, 0.035), transparent 34%),
+    radial-gradient(circle at 50% 70%, rgba(0, 191, 255, 0.018), transparent 34%),
+    radial-gradient(rgba(0, 255, 65, 0.012) 1px, transparent 1px);
+  background-size: auto, auto, auto, 28px 28px;
+}
+
+.boot-line-description {
+  animation: boot-line-type 0.32s steps(42, end) both;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.boot-accent-pulse-green {
+  animation: boot-accent-green 0.18s ease-out;
+}
+
+.boot-accent-pulse-amber {
+  animation: boot-accent-amber 0.18s ease-out;
+}
+
+.boot-glitch-bar {
+  position: absolute;
+  left: -30%;
+  height: 4px;
+  width: 32%;
+  background: rgba(0, 255, 65, 0.15);
+  animation: boot-glitch-sweep 0.1s linear both;
+}
+
+.boot-flash {
+  animation: boot-crt-flash 0.3s linear both;
+}
+
+.boot-ready-title {
+  animation: boot-ready-glow 1.1s ease-in-out infinite;
+  text-shadow:
+    0 0 16px rgba(0, 255, 65, 0.42),
+    0 0 44px rgba(0, 255, 65, 0.16);
+}
+
+.boot-scan-sweep,
+.boot-scan-sweep::before,
+.boot-scan-sweep::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(0, 255, 65, 0.6);
+  animation: boot-ready-scan 0.2s ease-out both;
+}
+
+.boot-scan-sweep {
+  top: 0;
+}
+
+.boot-scan-sweep::before {
+  content: "";
+  animation-delay: 0.05s;
+}
+
+.boot-scan-sweep::after {
+  content: "";
+  animation-delay: 0.1s;
+}
+
+.boot-crt-overlay {
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+}
+
+.boot-vignette {
+  z-index: 9997;
+  background: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+@keyframes boot-line-type {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 100%;
+  }
+}
+
+@keyframes boot-accent-green {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(0, 255, 65, 0);
+  }
+  45% {
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.65);
+  }
+}
+
+@keyframes boot-accent-amber {
+  0%,
+  100% {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+  }
+  45% {
+    background: #f59e0b;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.65);
+  }
+}
+
+@keyframes boot-glitch-sweep {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(430%);
+  }
+}
+
+@keyframes boot-crt-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+}
+
+@keyframes boot-ready-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.24);
+    transform: scale(1.01);
+  }
+}
+
+@keyframes boot-ready-scan {
+  from {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+}
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
