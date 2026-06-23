@@ -346,7 +346,7 @@ export function AchievementsApp(): JSX.Element {
             worth it.
           </p>
           <footer className="mt-4 font-mono text-[11px] text-[#444]">
-            — Ashish Kumar Jha, 1st year B.Tech CSE
+            — Ashish Kumar Jha, Pre-Final year B.Tech CSE
           </footer>
         </blockquote>
       </div>
