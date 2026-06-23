@@ -247,7 +247,7 @@ export function AchievementsApp(): JSX.Element {
   return (
     <section
       ref={sectionRef}
-      className="achievements-hall relative min-h-screen overflow-hidden px-6 py-28 md:px-12"
+      className="achievements-hall relative overflow-hidden px-6 py-16 md:px-12"
       aria-label="Achievements hall of fame"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -274,11 +274,11 @@ export function AchievementsApp(): JSX.Element {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-        <header className="mb-[72px] max-w-3xl">
+        <header className="mb-10 max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
             06 / Wins
           </p>
-          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+          <h2 className="mt-3 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
             Built under
             <span className="block text-gold">pressure.</span>
           </h2>
@@ -289,7 +289,7 @@ export function AchievementsApp(): JSX.Element {
 
         <div
           ref={countersRef}
-          className="mb-[72px] grid gap-8 rounded-2xl border border-white/[0.05] bg-[rgba(8,8,20,0.6)] px-6 py-7 backdrop-blur-xl sm:grid-cols-2 lg:grid-cols-4 lg:px-10"
+          className="mb-10 grid gap-8 rounded-2xl border border-white/[0.05] bg-[rgba(8,8,20,0.6)] px-6 py-7 backdrop-blur-xl sm:grid-cols-2 lg:grid-cols-4 lg:px-10"
         >
           {COUNTERS.map((counter) => (
             <AnimatedCounter
@@ -304,7 +304,7 @@ export function AchievementsApp(): JSX.Element {
           {ACHIEVEMENTS.map((achievement) => (
             <div
               key={`${achievement.year}-${achievement.title}-${achievement.side}`}
-              className="relative mb-12 grid md:grid-cols-2 md:gap-16"
+              className="relative mb-8 grid md:grid-cols-2 md:gap-16"
             >
               <div
                 className="achievement-center-dot"
@@ -334,7 +334,7 @@ export function AchievementsApp(): JSX.Element {
           ))}
         </div>
 
-        <blockquote className="relative mt-20 border-y border-gold/[0.08] bg-gold/[0.04] px-6 py-8 text-center md:px-12">
+        <blockquote className="relative mt-10 border-y border-gold/[0.08] bg-gold/[0.04] px-6 py-8 text-center md:px-12">
           <span
             className="pointer-events-none absolute left-8 top-0 font-display text-7xl text-gold/20"
             aria-hidden="true"

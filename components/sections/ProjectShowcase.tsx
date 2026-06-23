@@ -162,7 +162,7 @@ export function ProjectShowcase(): JSX.Element {
   return (
     <section
       ref={sectionRef}
-      className="project-showcase-section relative min-h-screen overflow-hidden px-6 py-28 md:px-12"
+      className="project-showcase-section relative overflow-hidden px-6 py-16 md:px-12"
       aria-label="Project showcase"
     >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
@@ -190,11 +190,11 @@ export function ProjectShowcase(): JSX.Element {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-        <div className="mb-20 max-w-3xl">
+        <div className="mb-10 max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#333]">
             04 / Shipped Products
           </p>
-          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+          <h2 className="mt-3 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
             Things I
             <span className="block text-green">actually built.</span>
           </h2>

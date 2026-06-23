@@ -259,7 +259,7 @@ export function SkillsApp(): JSX.Element {
   return (
     <div
       ref={sectionRef}
-      className="relative min-h-screen overflow-hidden bg-[#050510] px-6 py-28 md:px-12"
+      className="relative overflow-hidden bg-[#050510] px-6 py-16 md:px-12"
     >
       {FLOATING_LABELS.map((item) => (
         <span
@@ -275,11 +275,11 @@ export function SkillsApp(): JSX.Element {
       ))}
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-        <header className="mb-[72px] max-w-3xl">
+        <header className="mb-10 max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#333]">
             05 / Tech Stack
           </p>
-          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+          <h2 className="mt-3 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
             The stack I
             <span className="block text-green">actually use.</span>
           </h2>
@@ -350,7 +350,7 @@ export function SkillsApp(): JSX.Element {
           </div>
         </div>
 
-        <div className="mt-14 overflow-hidden rounded-2xl border border-white/[0.055] bg-[rgba(8,8,20,0.56)] p-5 backdrop-blur-xl">
+        <div className="mt-10 overflow-hidden rounded-2xl border border-white/[0.055] bg-[rgba(8,8,20,0.56)] p-5 backdrop-blur-xl">
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#333]">
             Tech Ecosystem Map
           </p>

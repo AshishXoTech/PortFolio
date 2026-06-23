@@ -313,7 +313,7 @@ export function EngineerStory(): JSX.Element {
 
   return (
     <section
-      className="relative overflow-hidden py-24"
+      className="relative overflow-hidden py-14"
       aria-label="A day in the life"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -321,11 +321,11 @@ export function EngineerStory(): JSX.Element {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,255,65,0.08),transparent_30%),radial-gradient(circle_at_82%_72%,rgba(124,58,237,0.1),transparent_34%)]" />
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-4 md:px-12">
-        <div className="mb-10 max-w-2xl">
+        <div className="mb-8 max-w-2xl">
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-green">
             Scene 03 / Engineer Story
           </p>
-          <h2 className="mt-3 font-display text-4xl font-black leading-tight text-[#e8e8f0] md:text-6xl">
+          <h2 className="mt-2 font-display text-4xl font-black leading-tight text-[#e8e8f0] md:text-6xl">
             A day in the life, without the drama filter.
           </h2>
           <p className="mt-4 font-sans text-base leading-7 text-[#6a6a8a]">

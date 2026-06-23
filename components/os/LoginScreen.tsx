@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { LockKeyhole } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EntrySequence } from "./EntrySequence";
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -152,6 +153,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps): JSX.Element 
   const [role, setRole] = useState(ROLE_STATES[0]);
   const [time, setTime] = useState("00:00:00");
   const [useBlur, setUseBlur] = useState(true);
+  const [showEntrySequence, setShowEntrySequence] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -303,9 +305,10 @@ export default function LoginScreen({ onLogin }: LoginScreenProps): JSX.Element 
 
     setIsLoading(true);
     setTimeout(() => {
-      onLogin();
-    }, 1000);
-  }, [isLoading, onLogin]);
+      setIsCardVisible(false);
+      setShowEntrySequence(true);
+    }, 800);
+  }, [isLoading]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050510]">
@@ -429,19 +432,40 @@ export default function LoginScreen({ onLogin }: LoginScreenProps): JSX.Element 
           onClick={handleLogin}
           disabled={isLoading}
           className={[
-            "mt-3 flex w-full cursor-pointer items-center justify-center rounded-[10px] px-4 py-[13px] font-mono text-[13px] font-bold uppercase tracking-[0.08em] transition duration-200 disabled:cursor-not-allowed",
+            "relative overflow-hidden mt-3 flex w-full cursor-pointer items-center justify-center rounded-[10px] px-4 py-[13px] font-mono text-[13px] font-bold uppercase tracking-[0.08em] transition duration-[100ms] disabled:cursor-not-allowed",
             isLoading
-              ? "border border-green/20 bg-green/10 text-green"
+              ? "border border-green bg-green/10 text-green"
               : "border-0 bg-[linear-gradient(135deg,rgba(0,255,65,0.9),rgba(0,200,50,0.9))] text-[#050510] hover:-translate-y-px hover:bg-[linear-gradient(135deg,#00ff41,#00cc35)] hover:shadow-[0_8px_32px_rgba(0,255,65,0.3),0_0_0_1px_rgba(0,255,65,0.4)]",
           ].join(" ")}
         >
-          {isLoading ? "Authenticating..." : "Initialize Session →"}
+          {isLoading && (
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-green/20"
+              style={{
+                animation: "fill-progress 0.8s linear forwards",
+              }}
+            />
+          )}
+          <span className="relative z-10">
+            {isLoading ? "Authenticating..." : "Initialize Session →"}
+          </span>
         </button>
 
         <p className="mt-5 text-center font-mono text-[10px] text-[#2a2a2a]">
           AshishOS 1.0.0&nbsp; · &nbsp;kernel 18.2
         </p>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fill-progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+      ` }} />
+
+      {showEntrySequence && (
+        <EntrySequence onComplete={onLogin} />
+      )}
     </div>
   );
 }

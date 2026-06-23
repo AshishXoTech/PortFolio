@@ -3,15 +3,18 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useState } from "react";
 import * as THREE from "three";
-import { BugSwarm } from "@/components/three/BugSwarm";
-import { CodeSphere } from "@/components/three/CodeSphere";
+import { EarthGlobe } from "@/components/three/EarthGlobe";
 
 function CameraRig(): null {
   const { camera, pointer } = useThree();
 
   useFrame(() => {
-    const targetPosition = new THREE.Vector3(pointer.x * 0.35, pointer.y * 0.22, 5);
-    camera.position.lerp(targetPosition, 0.04);
+    const targetPosition = new THREE.Vector3(
+      pointer.x * 0.15,
+      pointer.y * 0.1,
+      6
+    );
+    camera.position.lerp(targetPosition, 0.03);
     camera.lookAt(0, 0, 0);
   });
 
@@ -36,7 +39,7 @@ export default function HeroSceneInner(): JSX.Element {
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 5], fov: 65 }}
+      camera={{ position: [0, 0, 6], fov: 60 }}
       dpr={[1, 1.5]}
       frameloop={isVisible ? "always" : "never"}
       gl={{
@@ -51,13 +54,12 @@ export default function HeroSceneInner(): JSX.Element {
         height: "100%",
       }}
     >
-      <ambientLight intensity={0.15} />
-      <pointLight position={[3, 3, 3]} color="#7c3aed" intensity={3} />
-      <pointLight position={[-3, -2, 2]} color="#00ff41" intensity={2} />
+      <ambientLight color="#111133" intensity={0.4} />
+      <directionalLight position={[5, 3, 5]} color="#ffffff" intensity={1.4} />
+      <directionalLight position={[-5, 0, -5]} color="#0044ff" intensity={0.2} />
       <Suspense fallback={null}>
         <CameraRig />
-        <CodeSphere />
-        <BugSwarm />
+        <EarthGlobe />
       </Suspense>
     </Canvas>
   );

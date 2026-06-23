@@ -16,5 +16,20 @@ export default function OSPage(): JSX.Element {
     return <LoginScreen onLogin={() => setBootStage("desktop")} />;
   }
 
-  return <Desktop />;
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes desktop-landing {
+          0% { opacity: 0; transform: scale(1.08); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        .desktop-entry-animation {
+          animation: desktop-landing 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      ` }} />
+      <div className="desktop-entry-animation">
+        <Desktop />
+      </div>
+    </>
+  );
 }

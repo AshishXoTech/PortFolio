@@ -29,7 +29,7 @@ const CONTACT_LINKS = [
 
 export function ContactSection(): JSX.Element {
   return (
-    <section className="terminal-contact-atmosphere relative overflow-hidden px-6 pb-40 md:px-12">
+    <section className="terminal-contact-atmosphere relative overflow-hidden px-6 py-16 md:px-12">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <span className="absolute left-[20%] top-10 h-[300px] w-[300px] rounded-full bg-green/[0.025] blur-[80px]" />
         <span className="terminal-artifact left-[5%] top-[45%]">Node.js</span>
@@ -37,11 +37,11 @@ export function ContactSection(): JSX.Element {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1200px]">
-        <header className="mb-16 max-w-3xl">
+        <header className="mb-8 max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-purple">
             08 / Contact
           </p>
-          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+          <h2 className="mt-3 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
             Let&apos;s build
             <span className="block text-purple">something real.</span>
           </h2>

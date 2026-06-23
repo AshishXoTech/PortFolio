@@ -16,6 +16,7 @@ import { EngineerStory } from "@/components/sections/EngineerStory";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 import { TerminalSection } from "@/components/sections/TerminalSection";
 import HeroScene from "@/components/three/HeroScene";
+import { InteractivePhoto } from "@/components/ui/InteractivePhoto";
 import type { AppId } from "@/types/os";
 
 interface EngineerUniverseProps {
@@ -353,20 +354,45 @@ export function EngineerUniverse({
   const rootRef = useRef<HTMLElement>(null);
   const overviewRef = useRef<HTMLElement>(null);
   const role = useRotatingRole();
-  const coordinates = useCoordinates();
   const showScrollIndicator = useScrollIndicator();
   const overviewEntered = useSectionEntered(overviewRef);
   useUniverseMotion(rootRef);
 
   return (
-    <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden pb-28">
+    <main ref={rootRef} className="relative z-10 min-h-screen overflow-x-hidden pb-12">
       <AtmosphereLayers />
 
-      <section id="home" className="relative min-h-screen overflow-hidden pt-20">
+      <section id="home" className="relative overflow-hidden pt-20 pb-12">
         <div className="hero-grid-texture pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
-        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-80px)] max-w-[1200px] items-center gap-12 px-6 py-16 md:grid-cols-[52fr_48fr] md:px-12">
+
+        {/* Earth globe background */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 hidden md:block"
+          style={{ opacity: 0.35 }}
+          aria-hidden="true"
+        >
+          <HeroScene />
+        </div>
+
+        {/* Mobile gradient fallback */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 md:hidden"
+          style={{
+            background:
+              "radial-gradient(ellipse at 70% 30%, rgba(0,255,65,0.06), transparent 60%)",
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-8 px-6 py-12 md:grid-cols-[52fr_48fr] md:px-12">
+          {/* LEFT COLUMN — all text content */}
           <div className="min-w-0">
-            <div className="hero-badge mb-8 flex items-center gap-3">
+            {/* Mobile photo (above name) */}
+            <div className="mb-8 flex justify-center md:hidden">
+              <InteractivePhoto />
+            </div>
+
+            <div className="hero-badge mb-5 flex items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-green/20 bg-green/[0.04] px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-green">
                 <span
                   className="h-2 w-2 animate-pulse rounded-full bg-green shadow-[0_0_10px_rgba(0,255,65,0.8)]"
@@ -380,7 +406,7 @@ export function EngineerUniverse({
               </span>
             </div>
 
-            <h1 className="hero-name mb-5 font-display text-[clamp(44px,5.8vw,80px)] font-black uppercase leading-[0.92] tracking-[-0.04em] text-[#e8e8f0]">
+            <h1 className="hero-name mb-3 font-display text-[clamp(44px,5.8vw,80px)] font-black uppercase leading-[0.92] tracking-[-0.04em] text-[#e8e8f0]">
               <span className="block">Ashish Kumar</span>
               <span className="block">
                 Jha<span className="text-green">.</span>
@@ -389,28 +415,31 @@ export function EngineerUniverse({
 
             <p
               key={role}
-              className="hero-role hero-role-glitch mb-7 font-mono text-base text-[rgba(232,232,240,0.45)]"
+              className="hero-role hero-role-glitch mb-5 font-mono text-base text-[rgba(232,232,240,0.45)]"
             >
               {role}
             </p>
 
-            <p className="hero-bio mb-10 max-w-[440px] font-sans text-sm leading-[1.85] text-muted">
+            <p className="hero-bio mb-6 max-w-[440px] font-sans text-sm leading-[1.85] text-muted">
               I build production-grade systems with MERN, Next.js, TypeScript,
               FastAPI, Docker, and OpenAI. Currently targeting SWE roles.
             </p>
 
-            <div className="hero-stats mb-11 grid grid-cols-2 gap-y-6 md:flex md:gap-0">
+            {/* Stats row — fixed single line */}
+            <div className="hero-stats mb-7 grid grid-cols-2 gap-y-6 md:flex md:flex-nowrap md:gap-0">
               {HERO_STATS.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className={[
-                    "md:border-r md:border-white/[0.06] md:px-7",
-                    index === 0 ? "md:pl-0" : "",
-                    index === HERO_STATS.length - 1 ? "md:border-r-0 md:pr-0" : "",
-                  ].join(" ")}
+                  className="flex-shrink-0 md:border-r md:border-white/[0.06] md:px-5"
+                  style={{
+                    ...(index === 0 ? { paddingLeft: 0 } : {}),
+                    ...(index === HERO_STATS.length - 1
+                      ? { borderRight: "none", paddingRight: 0 }
+                      : {}),
+                  }}
                 >
                   <p
-                    className="font-display text-4xl font-black leading-none"
+                    className="font-display text-[clamp(24px,3vw,36px)] font-black leading-none"
                     style={{ color: stat.color }}
                   >
                     {stat.value}
@@ -456,8 +485,8 @@ export function EngineerUniverse({
               </div>
             )}
 
-            <div className="mt-9">
-              <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.15em] text-[#333]">
+            <div className="mt-6">
+              <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.15em] text-[#333]">
                 Tech Stack
               </p>
               <div className="flex max-w-[520px] flex-wrap items-center gap-x-2 gap-y-2 font-mono text-[10px] text-[#2a2a3a]">
@@ -473,21 +502,9 @@ export function EngineerUniverse({
             </div>
           </div>
 
-          <div className="hero-frame relative hidden h-[580px] overflow-hidden rounded-[20px] border border-white/[0.05] bg-[rgba(5,5,16,0.6)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_40px_80px_rgba(0,0,0,0.5)] md:block">
-            <HeroScene />
-            <div className="pointer-events-none absolute right-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-[rgba(8,8,20,0.62)] px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-[#888] backdrop-blur-xl">
-              <span
-                className="h-1.5 w-1.5 animate-pulse rounded-full bg-red shadow-[0_0_10px_rgba(255,0,60,0.8)]"
-                aria-hidden="true"
-              />
-              LIVE SYSTEM
-            </div>
-            <div className="pointer-events-none absolute bottom-5 left-5 z-20 font-mono text-[9px] text-green/30">
-              {coordinates}
-            </div>
-            <div className="pointer-events-none absolute bottom-5 right-5 z-20 font-mono text-[9px] text-[#333]">
-              AshishOS / universe.three
-            </div>
+          {/* RIGHT COLUMN — Interactive Photo */}
+          <div className="hero-frame hidden items-center justify-center p-5 md:flex">
+            <InteractivePhoto />
           </div>
         </div>
 
@@ -509,10 +526,10 @@ export function EngineerUniverse({
         id="about"
         ref={overviewRef}
         data-universe-scene
-        className="relative flex min-h-screen flex-col justify-center overflow-hidden py-24"
+        className="relative flex flex-col justify-center overflow-hidden py-14"
       >
         <div className="mx-auto w-full max-w-[1200px] px-6 text-center md:px-12">
-          <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-[#333]">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[#333]">
             System Overview
           </p>
           <h2 className="mx-auto max-w-3xl font-display text-[clamp(44px,6vw,64px)] font-black leading-[0.95] tracking-[-0.04em] text-[#e8e8f0]">
@@ -520,14 +537,14 @@ export function EngineerUniverse({
             <span className="block text-green">don&apos;t lie.</span>
           </h2>
 
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {OVERVIEW_STATS.map((stat) => (
               <OverviewStatCard key={stat.title} stat={stat} isActive={overviewEntered} />
             ))}
           </div>
         </div>
 
-        <div className="mt-16 overflow-hidden border-y border-green/[0.08] bg-green/[0.04] py-3">
+        <div className="mt-10 overflow-hidden border-y border-green/[0.08] bg-green/[0.04] py-3">
           <div className="system-ticker-track flex w-max items-center gap-4 font-mono text-[11px] text-[#555]">
             {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map(
               (item, index) => (

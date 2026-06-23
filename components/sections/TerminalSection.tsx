@@ -9,7 +9,7 @@ const CODE_COLUMNS = Array.from({ length: 8 }, (_, index) => ({
 
 export function TerminalSection(): JSX.Element {
   return (
-    <section className="terminal-contact-atmosphere relative min-h-screen overflow-hidden px-6 py-[120px] md:px-12">
+    <section className="terminal-contact-atmosphere relative overflow-hidden px-6 py-16 md:px-12">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         {CODE_COLUMNS.map((column, index) => (
           <div
@@ -27,11 +27,11 @@ export function TerminalSection(): JSX.Element {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1200px]">
-        <header className="mb-14 max-w-3xl">
+        <header className="mb-8 max-w-3xl">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-green">
             07 / Terminal
           </p>
-          <h2 className="mt-5 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
+          <h2 className="mt-3 font-display text-[clamp(48px,7vw,72px)] font-black leading-[0.9] tracking-[-0.04em] text-[#e8e8f0]">
             Talk to
             <span className="block text-green">the machine.</span>
           </h2>
